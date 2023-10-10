@@ -1,5 +1,7 @@
 #  BakLLaVA
-
+<p align="center">
+  <img src="https://media.tenor.com/tmTgtSNZkPwAAAAC/baklava.gif" width="50%"> <br>
+</p>
 Forked from https://github.com/haotian-liu/LLaVA
 
 [![Code License](https://img.shields.io/badge/Code%20License-Apache_2.0-green.svg)](https://github.com/tatsu-lab/stanford_alpaca/blob/main/LICENSE)
