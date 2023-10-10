@@ -22,8 +22,8 @@ Forked from https://github.com/haotian-liu/LLaVA
 
 1. Clone this repository and navigate to LLaVA folder
 ```bash
-git clone https://github.com/haotian-liu/LLaVA.git
-cd LLaVA
+git clone https://github.com/SkunkworksAI/BakLLaVA.git
+cd BakLLaVA
 ```
 
 2. Install Package
