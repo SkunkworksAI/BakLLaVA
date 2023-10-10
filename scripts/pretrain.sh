@@ -4,11 +4,17 @@
 
 # MODEL_VERSION=vicuna-v1-3-7b
 # MODEL_VERSION=llama-2-7b-chat
+MODEL_VERSION=mistralai/Mistral-7B-v0.1
 
 ########### DO NOT CHANGE ###########
 ########### USE THIS FOR BOTH ###########
 PROMPT_VERSION=plain
 ########### DO NOT CHANGE ###########
+
+#1. Prep Model Weights
+#2. Data Download + path
+#3. images download + path
+
 
 deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \

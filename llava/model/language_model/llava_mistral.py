@@ -28,7 +28,7 @@ from ..llava_arch import LlavaMetaModel, LlavaMetaForCausalLM
 
 
 class LlavaConfig(MistralConfig):
-    model_type = "llava"
+    model_type = "llava_mistral"
 
 
 class LlavaMistralModel(LlavaMetaModel, MistralModel):
@@ -136,5 +136,5 @@ class LlavaMistralForCausalLM(MistralForCausalLM, LlavaMetaForCausalLM):
         )
         return model_inputs
 
-AutoConfig.register("llava", LlavaConfig)
+AutoConfig.register("llava_mistral", LlavaConfig)
 AutoModelForCausalLM.register(LlavaConfig, LlavaMistralForCausalLM)
