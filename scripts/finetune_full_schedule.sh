@@ -28,7 +28,7 @@ deepspeed llava/train/train_mem.py \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
     --bf16 True \
-    --output_dir ./checkpoints/llava-$MODEL_VERSION-finetune \
+    --output_dir ../n6/checkpoints/llava-$MODEL_VERSION-finetune \
     --num_train_epochs 3 \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 4 \
