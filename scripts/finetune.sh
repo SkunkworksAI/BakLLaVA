@@ -19,7 +19,7 @@ MODEL_VERSION=mistralai/Mistral-7B-v0.1
 
 deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path ./checkpoints/$MODEL_VERSION \
+    --model_name_or_path $MODEL_VERSION \
     --version $PROMPT_VERSION \
     --data_path finetune_data/llava_instruct_150k.json \
     --image_folder finetune_data/images \
