@@ -22,7 +22,7 @@ deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero3.json \
     --model_name_or_path $MODEL_VERSION \
     --version v1 \
-    --data_path finetune_data/chat/llava_instruct_150k.json \
+    --data_path finetune_data/chat/llava_v1_5_mix665k.json \
     --image_folder finetune_data/images \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --pretrain_mm_mlp_adapter ./checkpoints/llava-mistralai/Mistral-7B-v0.1-pretrain/mm_projector.bin \
