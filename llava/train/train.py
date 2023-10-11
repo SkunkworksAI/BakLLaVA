@@ -789,7 +789,7 @@ def train():
                 **bnb_model_from_pretrained_args
             )
         elif 'mistral' in model_args.model_name_or_path:
-            model = LLavaMistralForCausalLM.from_pretrained(
+            model = LlavaMistralForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
