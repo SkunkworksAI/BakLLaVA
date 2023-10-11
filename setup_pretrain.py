@@ -1,12 +1,10 @@
-from datasets import load_dataset
+
+from huggingface_hub import hf_hub_download
 import os
 import zipfile
 
-# Load the dataset
-dataset = load_dataset('liuhaotian/LLaVA-CC3M-Pretrain-595K')
-
 # Define a main directory
-main_dir = "main_directory"
+main_dir = "pretrain_data"
 
 # Define subdirectories
 sub_dir1 = "chat"
@@ -19,14 +17,17 @@ os.makedirs(main_dir, exist_ok=True)
 os.makedirs(os.path.join(main_dir, sub_dir1), exist_ok=True)
 os.makedirs(os.path.join(main_dir, sub_dir2), exist_ok=True)
 
-# Save chat.json
-with open(os.path.join(main_dir, sub_dir1, 'chat.json'), 'w') as f:
-    json.dump(dataset['train'], f)
+# Define the repository id
+repo_id = "liuhaotian/LLaVA-CC3M-Pretrain-595K"
 
-# Save images.zip
-with open(os.path.join(main_dir, sub_dir2, 'images.zip'), 'wb') as f:
-    f.write(dataset['train']['images'])
+# Download chat.json
+hf_hub_download(repo_id=repo_id, filename="chat.json", cache_dir=os.path.join(main_dir, sub_dir1))
+
+# Download images.zip
+hf_hub_download(repo_id=repo_id, filename="images.zip", cache_dir=os.path.join(main_dir, sub_dir2))
 
 # Unzip the images.zip
 with zipfile.ZipFile(os.path.join(main_dir, sub_dir2, 'images.zip'), 'r') as zip_ref:
     zip_ref.extractall(os.path.join(main_dir, sub_dir2))
+
+print("Files downloaded, moved and images unzipped successfully!")
