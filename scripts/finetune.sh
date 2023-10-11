@@ -21,7 +21,7 @@ deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path $MODEL_VERSION \
     --version $PROMPT_VERSION \
-    --data_path finetune_data/llava_instruct_150k.json \
+    --data_path finetune_data/chat/llava_instruct_150k.json \
     --image_folder finetune_data/images \
     --vision_tower openai/clip-vit-large-patch14 \
     --pretrain_mm_mlp_adapter ./checkpoints/llava-$MODEL_VERSION-pretrain/mm_projector.bin \
