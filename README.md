@@ -4,8 +4,13 @@
 </p>
 
 
+Baking SOTA multimodality into language models.
 
 
+
+
+
+______________
 
 Checkout the original LLaVA code, demo and paper here: https://github.com/haotian-liu/LLaVA
 
