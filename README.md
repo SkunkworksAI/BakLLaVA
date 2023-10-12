@@ -12,9 +12,6 @@ By implementing better base models, modified training process, custom datasets, 
 
 
 
-
-
-
 ______________
 
 Checkout the original LLaVA code, demo and paper here: https://github.com/haotian-liu/LLaVA
