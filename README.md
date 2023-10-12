@@ -6,6 +6,11 @@
 
 Baking SOTA multimodality into language models.
 
+By implementing better base models, modified training process, custom datasets, and significant architecture changes to the original LLaVA implementation.
+
+
+
+
 
 
 
