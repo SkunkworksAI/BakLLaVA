@@ -2,9 +2,12 @@
 <p align="center">
   <img src="https://media.tenor.com/tmTgtSNZkPwAAAAC/baklava.gif" width="50%"> <br>
 </p>
-Forked from https://github.com/haotian-liu/LLaVA
 
-Please checkout their code, demo and paper. 
+
+
+
+
+Checkout the original LLaVA code, demo and paper here: https://github.com/haotian-liu/LLaVA
 
 ORIGINAL PAPER and LINKS:
 *Visual instruction tuning towards large language and vision models with GPT-4 level capabilities.*
