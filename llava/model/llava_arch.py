@@ -78,12 +78,129 @@ class LlavaMetaForCausalLM(ABC):
 
     def get_vision_tower(self):
         return self.get_model().get_vision_tower()
-
+    """
     def encode_images(self, images):
         image_features = self.get_model().get_vision_tower()(images)
         image_features = self.get_model().mm_projector(image_features)
         return image_features
 
+   
+    def encode_images(self, images):
+        image_features = []
+        vision_tower = self.get_model().get_vision_tower()
+        for image in images:
+           image_feature = vision_tower(image)
+           image_feature = self.get_model().mm_projector(image_feature)
+           image_features.append(image_feature)
+        return image_features
+    
+    def encode_images(self, images):
+        image_features = []
+        vision_tower = self.get_model().get_vision_tower()
+        for image_batch in images:
+            batch_features = []
+            for image in image_batch:
+                image_feature = vision_tower(image.unsqueeze(0))
+                image_feature = self.get_model().mm_projector(image_feature)
+                batch_features.append(image_feature)
+            image_features.append(batch_features)
+        return image_features
+    
+    def encode_images(self, images):
+        image_features = []
+        for i in range(0, len(images), 5):
+            img = images[i]
+            quadrants = images[i+1:i+5]
+            img_feature = self.get_model().get_vision_tower()(img)
+            quadrant_features = [self.get_model().get_vision_tower()(quad) for quad in quadrants]
+            img_feature = self.get_model().mm_projector(img_feature)
+            quadrant_features = [self.get_model().mm_projector(quad_feature) for quad_feature in quadrant_features]
+            combined_feature = torch.cat([img_feature] + quadrant_features, dim=0)
+            image_features.append(combined_feature)
+        return image_features
+    
+    def encode_images(self, images):
+        image_features = []
+        for i in range(0, len(images), 5):
+           img = images[i]
+           quadrants = images[i+1:i+5]
+           img_feature = self.get_model().get_vision_tower()(img.unsqueeze(0))
+           quadrant_features = [self.get_model().get_vision_tower()(quad.unsqueeze(0)) for quad in quadrants]
+           img_feature = self.get_model().mm_projector(img_feature)
+           quadrant_features = [self.get_model().mm_projector(quad_feature) for quad_feature in quadrant_features]
+           combined_feature = torch.cat([img_feature] + quadrant_features, dim=0)
+           image_features.append(combined_feature)
+        return image_features
+    
+    def encode_images(self, images):
+        image_features = []
+        for i in range(0, len(images), 5):
+            img = images[i]
+            quadrants = images[i+1:i+5]
+            img_feature = self.get_model().get_vision_tower()(img.unsqueeze(0))
+            quadrant_features = [self.get_model().get_vision_tower()(quad.unsqueeze(0)) for quad in quadrants]
+            img_feature = self.get_model().mm_projector(img_feature)
+            quadrant_features = [self.get_model().mm_projector(quad_feature) for quad_feature in quadrant_features]
+            print(img_feature.shape)
+            for quad_feature in quadrant_features:
+                print(quad_feature.shape)
+            # Ensure all tensors have the same number of dimensions before concatenating
+            if img_feature.dim() < quadrant_features[0].dim():
+                img_feature = img_feature.unsqueeze(0)
+            elif img_feature.dim() > quadrant_features[0].dim():
+                quadrant_features = [quad_feature.unsqueeze(0) for quad_feature in quadrant_features]
+        
+            combined_feature = torch.cat([img_feature] + quadrant_features, dim=0)
+            image_features.append(combined_feature)
+        return image_features
+    
+    def encode_images(self, images):
+        image_features = []
+        for i in range(0, len(images), 5):
+            img = images[i]
+            quadrants = images[i+1:i+5]
+            img_feature = self.get_model().get_vision_tower()(img.unsqueeze(0))
+            quadrant_features = [self.get_model().get_vision_tower()(quad.unsqueeze(0)) for quad in quadrants]
+            img_feature = self.get_model().mm_projector(img_feature)
+            quadrant_features = [self.get_model().mm_projector(quad_feature) for quad_feature in quadrant_features]
+            
+            # Flatten the features to be of the same dimension
+            img_feature = img_feature.view(-1)
+            quadrant_features = [quad_feature.view(-1) for quad_feature in quadrant_features]
+            
+            combined_feature = torch.cat([img_feature] + quadrant_features, dim=0)
+            image_features.append(combined_feature)
+        return image_features
+    
+    def encode_images(self, images):
+        image_features = []
+        for i in range(0, len(images), 5):
+           img = images[i]
+           quadrants = images[i+1:i+5]
+           img_feature = self.get_model().get_vision_tower()(img.unsqueeze(0))
+           quadrant_features = [self.get_model().get_vision_tower()(quad.unsqueeze(0)) for quad in quadrants]
+           img_feature = self.get_model().mm_projector(img_feature)
+           quadrant_features = [self.get_model().mm_projector(quad_feature) for quad_feature in quadrant_features]
+           combined_feature = torch.cat([img_feature] + quadrant_features, dim=0)
+           image_features.append(combined_feature)
+        return image_features"""
+    def encode_images(self, images):
+        image_features = []
+        for i in range(0, len(images), 5):
+            img = images[i]
+            quadrants = images[i+1:i+5]
+            img_feature = self.get_model().get_vision_tower()(img.unsqueeze(0))
+            quadrant_features = [self.get_model().get_vision_tower()(quad.unsqueeze(0)) for quad in quadrants]
+            img_feature = self.get_model().mm_projector(img_feature)
+            quadrant_features = [self.get_model().mm_projector(quad_feature) for quad_feature in quadrant_features]
+
+            # Reshape the features to be of the same dimension
+            img_feature = img_feature.view(-1, img_feature.shape[-1])
+            quadrant_features = [quad_feature.view(-1, quad_feature.shape[-1]) for quad_feature in quadrant_features]
+            
+            combined_feature = torch.cat([img_feature] + quadrant_features, dim=0)
+            image_features.append(combined_feature)
+        return image_features
     def prepare_inputs_labels_for_multimodal(
         self, input_ids, attention_mask, past_key_values, labels, images
     ):
@@ -158,7 +275,12 @@ class LlavaMetaForCausalLM(ABC):
                     cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids))
                 if labels is not None:
                     cur_new_labels.append(cur_labels)
+            
             cur_new_input_embeds = [x.to(device=self.device) for x in cur_new_input_embeds]
+            for embed in cur_new_input_embeds:
+                print(embed.shape)
+            #cur_new_input_embeds[1] = cur_new_input_embeds[1].view(-1, cur_new_input_embeds[1].shape[-1])
+
             cur_new_input_embeds = torch.cat(cur_new_input_embeds, dim=0)
             new_input_embeds.append(cur_new_input_embeds)
             if labels is not None:

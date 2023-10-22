@@ -1,0 +1,979 @@
+2023-10-11 03:35:02,085 INFO    StreamThr :77829 [internal.py:wandb_internal():86] W&B internal server running at pid: 77829, started at: 2023-10-11 03:35:02.084947
+2023-10-11 03:35:02,085 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status
+2023-10-11 03:35:02,087 INFO    WriterThread:77829 [datastore.py:open_for_write():85] open: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/run-wmknhqgg.wandb
+2023-10-11 03:35:02,087 DEBUG   SenderThread:77829 [sender.py:send():375] send: header
+2023-10-11 03:35:02,091 DEBUG   SenderThread:77829 [sender.py:send():375] send: run
+2023-10-11 03:35:02,282 INFO    SenderThread:77829 [dir_watcher.py:__init__():219] watching files in: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files
+2023-10-11 03:35:02,282 INFO    SenderThread:77829 [sender.py:_start_run_threads():1124] run started: wmknhqgg with start time 1696995302.084746
+2023-10-11 03:35:02,282 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:02,282 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:02,289 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: check_version
+2023-10-11 03:35:02,289 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: check_version
+2023-10-11 03:35:02,395 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: run_start
+2023-10-11 03:35:02,421 DEBUG   HandlerThread:77829 [system_info.py:__init__():31] System info init
+2023-10-11 03:35:02,421 DEBUG   HandlerThread:77829 [system_info.py:__init__():46] System info init done
+2023-10-11 03:35:02,421 INFO    HandlerThread:77829 [system_monitor.py:start():181] Starting system monitor
+2023-10-11 03:35:02,421 INFO    SystemMonitor:77829 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-10-11 03:35:02,421 INFO    HandlerThread:77829 [system_monitor.py:probe():201] Collecting system info
+2023-10-11 03:35:02,422 INFO    SystemMonitor:77829 [interfaces.py:start():190] Started cpu monitoring
+2023-10-11 03:35:02,422 INFO    SystemMonitor:77829 [interfaces.py:start():190] Started disk monitoring
+2023-10-11 03:35:02,423 INFO    SystemMonitor:77829 [interfaces.py:start():190] Started gpu monitoring
+2023-10-11 03:35:02,423 INFO    SystemMonitor:77829 [interfaces.py:start():190] Started memory monitoring
+2023-10-11 03:35:02,424 INFO    SystemMonitor:77829 [interfaces.py:start():190] Started network monitoring
+2023-10-11 03:35:02,463 DEBUG   HandlerThread:77829 [system_info.py:probe():195] Probing system
+2023-10-11 03:35:02,465 DEBUG   HandlerThread:77829 [system_info.py:_probe_git():180] Probing git
+2023-10-11 03:35:02,470 DEBUG   HandlerThread:77829 [system_info.py:_probe_git():188] Probing git done
+2023-10-11 03:35:02,470 DEBUG   HandlerThread:77829 [system_info.py:probe():240] Probing system done
+2023-10-11 03:35:02,470 DEBUG   HandlerThread:77829 [system_monitor.py:probe():210] {'os': 'Linux-5.15.0-84-generic-x86_64-with-glibc2.35', 'python': '3.10.13', 'heartbeatAt': '2023-10-11T03:35:02.463665', 'startedAt': '2023-10-11T03:35:02.080740', 'docker': None, 'cuda': None, 'args': ('--local_rank=0', '--deepspeed', './scripts/zero2.json', '--model_name_or_path', 'mistralai/Mistral-7B-v0.1', '--version', 'plain', '--data_path', 'pretrain_data/chat/chat.json', '--image_folder', 'pretrain_data/images', '--vision_tower', 'openai/clip-vit-large-patch14', '--tune_mm_mlp_adapter', 'True', '--mm_vision_select_layer', '-2', '--mm_use_im_start_end', 'False', '--mm_use_im_patch_token', 'False', '--bf16', 'True', '--output_dir', './checkpoints/llava-mistralai/Mistral-7B-v0.1-pretrain', '--num_train_epochs', '2', '--per_device_train_batch_size', '16', '--per_device_eval_batch_size', '4', '--gradient_accumulation_steps', '1', '--evaluation_strategy', 'no', '--save_strategy', 'steps', '--save_steps', '24000', '--save_total_limit', '1', '--learning_rate', '2e-3', '--weight_decay', '0.', '--warmup_ratio', '0.03', '--lr_scheduler_type', 'cosine', '--logging_steps', '1', '--tf32', 'True', '--model_max_length', '8000', '--gradient_checkpointing', 'True', '--dataloader_num_workers', '4', '--lazy_preprocess', 'True', '--report_to', 'wandb'), 'state': 'running', 'program': '/workspace/BakLLaVA/llava/train/train_mem.py', 'codePath': 'llava/train/train_mem.py', 'git': {'remote': 'https://github.com/SkunkworksAI/BakLLaVA.git', 'commit': 'e084c3be32f1d58a8231f283495124b9324a468c'}, 'email': None, 'root': '/workspace/BakLLaVA', 'host': 'ce70e219fd21', 'username': 'root', 'executable': '/root/miniconda3/envs/py3.10/bin/python', 'cpu_count': 48, 'cpu_count_logical': 96, 'cpu_freq': {'current': 1553.125, 'min': 800.0, 'max': 3500.0}, 'cpu_freq_per_core': [{'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3300.0, 'min': 800.0, 'max': 3500.0}, {'current': 2300.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 2200.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 2199.997, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3300.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 2200.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3000.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 1100.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 2200.0, 'min': 800.0, 'max': 3500.0}, {'current': 1600.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 3300.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 2900.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 2500.0, 'min': 800.0, 'max': 3500.0}, {'current': 2200.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 2300.0, 'min': 800.0, 'max': 3500.0}, {'current': 2200.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 2500.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 1700.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 1700.0, 'min': 800.0, 'max': 3500.0}, {'current': 1700.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 1000.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 3500.0, 'min': 800.0, 'max': 3500.0}, {'current': 3300.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 2200.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}, {'current': 800.0, 'min': 800.0, 'max': 3500.0}], 'disk': {'total': 418.185977935791, 'used': 98.44499588012695}, 'gpu': 'NVIDIA A100 80GB PCIe', 'gpu_count': 4, 'gpu_devices': [{'name': 'NVIDIA A100 80GB PCIe', 'memory_total': 85899345920}, {'name': 'NVIDIA A100 80GB PCIe', 'memory_total': 85899345920}, {'name': 'NVIDIA A100 80GB PCIe', 'memory_total': 85899345920}, {'name': 'NVIDIA A100 80GB PCIe', 'memory_total': 85899345920}], 'memory': {'total': 1007.3291358947754}}
+2023-10-11 03:35:02,470 INFO    HandlerThread:77829 [system_monitor.py:probe():211] Finished collecting system info
+2023-10-11 03:35:02,470 INFO    HandlerThread:77829 [system_monitor.py:probe():214] Publishing system info
+2023-10-11 03:35:02,470 DEBUG   HandlerThread:77829 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-10-11 03:35:02,470 DEBUG   HandlerThread:77829 [system_info.py:_save_pip():67] Saving pip packages done
+2023-10-11 03:35:02,470 DEBUG   HandlerThread:77829 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-10-11 03:35:02,955 DEBUG   HandlerThread:77829 [system_info.py:_save_conda():86] Saving conda packages done
+2023-10-11 03:35:02,955 INFO    HandlerThread:77829 [system_monitor.py:probe():216] Finished publishing system info
+2023-10-11 03:35:02,957 DEBUG   SenderThread:77829 [sender.py:send():375] send: files
+2023-10-11 03:35:02,957 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-10-11 03:35:02,968 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:35:02,968 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:35:03,067 DEBUG   SenderThread:77829 [sender.py:send():375] send: telemetry
+2023-10-11 03:35:03,067 DEBUG   SenderThread:77829 [sender.py:send():375] send: config
+2023-10-11 03:35:03,067 DEBUG   SenderThread:77829 [sender.py:send():375] send: metric
+2023-10-11 03:35:03,067 DEBUG   SenderThread:77829 [sender.py:send():375] send: telemetry
+2023-10-11 03:35:03,067 DEBUG   SenderThread:77829 [sender.py:send():375] send: metric
+2023-10-11 03:35:03,068 WARNING SenderThread:77829 [sender.py:send_metric():1329] Seen metric with glob (shouldn't happen)
+2023-10-11 03:35:03,068 DEBUG   SenderThread:77829 [sender.py:send():375] send: telemetry
+2023-10-11 03:35:03,283 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_created():278] file/dir created: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/requirements.txt
+2023-10-11 03:35:03,306 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_created():278] file/dir created: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/conda-environment.yaml
+2023-10-11 03:35:03,307 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_created():278] file/dir created: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:03,307 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_created():278] file/dir created: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:03,307 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_created():278] file/dir created: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-metadata.json
+2023-10-11 03:35:03,319 INFO    wandb-upload_0:77829 [upload_job.py:push():137] Uploaded file /tmp/tmpycfr8mqjwandb/u4ehguxo-wandb-metadata.json
+2023-10-11 03:35:05,283 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:05,729 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:05,731 DEBUG   SenderThread:77829 [sender.py:send():375] send: metric
+2023-10-11 03:35:05,731 DEBUG   SenderThread:77829 [sender.py:send():375] send: metric
+2023-10-11 03:35:05,732 DEBUG   SenderThread:77829 [sender.py:send():375] send: metric
+2023-10-11 03:35:05,732 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:05,733 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:05,733 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:06,284 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:07,192 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:07,193 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:07,193 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:07,194 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:07,196 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:07,284 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:07,284 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:08,284 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:08,643 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:08,644 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:08,645 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:08,646 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:09,285 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:09,285 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:10,081 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:10,083 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:10,083 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:10,085 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:10,285 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:10,285 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:11,286 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:11,549 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:11,551 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:11,551 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:11,552 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:12,286 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:12,286 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:12,553 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:12,981 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:12,982 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:12,982 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:12,984 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:13,287 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:13,287 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:14,287 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:14,427 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:14,429 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:14,430 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:14,431 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:15,287 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:15,288 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:15,881 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:15,882 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:15,882 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:15,883 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:16,288 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:16,288 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:17,288 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:17,359 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:17,360 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:17,360 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:17,362 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:17,968 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:35:17,969 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:35:18,068 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:18,288 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:18,289 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:18,848 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:18,849 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:18,850 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:18,851 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:19,289 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:19,289 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:20,289 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:20,314 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:20,315 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:20,316 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:20,317 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:21,289 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:21,290 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:21,801 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:21,802 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:21,802 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:21,803 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:22,290 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:22,290 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:23,270 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:23,271 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:23,272 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:23,272 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:23,273 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:23,290 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:23,291 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:24,291 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:24,797 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:24,799 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:24,799 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:24,800 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:25,291 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:25,292 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:26,269 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:26,271 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:26,271 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:26,273 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:26,292 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:26,292 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:27,292 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:27,726 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:27,729 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:27,729 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:27,730 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:28,292 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:28,293 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:28,730 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:29,206 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:29,208 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:29,209 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:29,209 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:29,293 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:29,293 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:30,293 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:30,662 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:30,663 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:30,664 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:30,665 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:31,294 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:31,294 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:32,139 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:32,140 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:32,140 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:32,141 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:32,294 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:32,294 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:32,968 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:35:32,968 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:35:33,294 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:33,632 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:33,634 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:33,634 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:33,635 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:34,295 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:34,295 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:34,640 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:35,118 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:35,119 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:35,120 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:35,121 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:35,295 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:35,296 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:35,296 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/config.yaml
+2023-10-11 03:35:36,296 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:36,599 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:36,601 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:36,601 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:36,603 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:37,296 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:37,296 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:38,044 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:38,045 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:38,046 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:38,047 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:38,296 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:38,297 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:39,297 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:39,493 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:39,495 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:39,496 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:39,498 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:40,297 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:40,297 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:40,499 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:41,015 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:41,016 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:41,017 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:41,018 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:41,297 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:41,299 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:42,298 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:42,476 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:42,477 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:42,477 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:42,479 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:43,298 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:43,299 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:43,983 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:43,984 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:43,985 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:43,986 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:44,299 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:44,299 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:45,299 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:45,505 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:45,505 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:45,507 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:45,508 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:45,509 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:46,299 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:46,300 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:47,034 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:47,035 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:47,037 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:47,038 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:47,300 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:47,300 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:47,968 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:35:47,969 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:35:48,300 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:48,515 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:48,517 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:48,518 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:48,518 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:49,301 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:49,301 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:49,965 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:49,967 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:49,968 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:49,969 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:50,301 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:50,301 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:50,970 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:51,302 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:51,454 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:51,456 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:51,457 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:51,458 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:52,302 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:52,302 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:52,943 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:52,944 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:52,945 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:52,946 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:53,303 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:53,303 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:54,303 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:54,409 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:54,410 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:54,411 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:54,412 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:55,303 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:55,304 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:55,909 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:55,913 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:55,914 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:55,915 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:56,304 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:56,305 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:56,917 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:35:57,305 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:57,425 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:57,427 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:57,427 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:57,429 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:58,306 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:58,306 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:35:58,911 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:35:58,913 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:35:58,914 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:35:58,915 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:35:59,306 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:35:59,307 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:00,307 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:00,410 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:00,412 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:00,412 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:00,413 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:01,307 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:01,308 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:01,929 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:01,929 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:01,931 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:01,932 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:01,933 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:02,308 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:02,308 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:02,424 DEBUG   SystemMonitor:77829 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-10-11 03:36:02,427 DEBUG   SenderThread:77829 [sender.py:send():375] send: stats
+2023-10-11 03:36:02,969 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:36:02,969 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:36:03,308 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:03,455 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:03,457 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:03,457 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:03,458 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:04,309 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:04,309 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:04,964 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:04,966 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:04,967 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:04,968 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:05,309 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:05,310 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:06,309 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:06,437 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:06,439 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:06,440 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:06,442 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:07,310 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:07,310 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:07,443 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:07,908 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:07,909 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:07,911 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:07,911 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:08,310 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:08,311 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:09,311 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:09,374 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:09,376 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:09,377 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:09,378 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:10,311 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:10,312 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:10,855 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:10,856 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:10,857 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:10,858 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:11,312 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:11,312 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:12,312 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:12,334 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:12,336 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:12,337 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:12,338 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:13,313 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:13,313 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:13,339 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:13,847 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:13,849 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:13,850 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:13,850 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:14,313 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:14,313 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:15,313 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:15,326 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:15,327 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:15,328 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:15,329 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:16,314 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:16,314 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:16,851 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:16,853 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:16,853 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:16,854 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:17,314 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:17,315 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:17,969 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:36:17,969 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:36:18,308 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:18,310 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:18,310 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:18,312 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:18,315 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:18,315 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:19,313 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:19,315 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:19,820 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:19,822 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:19,823 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:19,824 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:20,316 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:20,316 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:21,304 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:21,306 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:21,308 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:21,308 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:21,316 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:21,316 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:22,317 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:22,783 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:22,785 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:22,786 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:22,787 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:23,317 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:23,318 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:24,254 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:24,256 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:24,257 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:24,257 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:24,318 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:24,318 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:25,258 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:25,318 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:25,728 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:25,730 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:25,731 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:25,732 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:26,318 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:26,319 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:27,161 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:27,163 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:27,163 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:27,165 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:27,319 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:27,319 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:28,319 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:28,676 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:28,678 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:28,680 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:28,680 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:29,320 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:29,320 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:30,130 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:30,133 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:30,133 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:30,134 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:30,320 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:30,321 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:31,136 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:31,321 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:31,620 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:31,622 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:31,623 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:31,624 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:32,321 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:32,322 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:32,428 DEBUG   SenderThread:77829 [sender.py:send():375] send: stats
+2023-10-11 03:36:33,040 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:36:33,041 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:36:33,048 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:33,114 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:33,115 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:33,115 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:33,322 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:33,322 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:34,322 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:34,509 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:34,511 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:34,512 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:34,513 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:35,323 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:35,323 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:36,030 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:36,032 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:36,033 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:36,034 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:36,323 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:36,323 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:37,035 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:37,323 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:37,499 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:37,501 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:37,503 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:37,503 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:38,324 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:38,324 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:38,983 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:38,985 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:38,985 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:38,986 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:39,324 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:39,325 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:40,325 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:40,473 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:40,475 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:40,476 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:40,477 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:41,325 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:41,326 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:41,945 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:41,947 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:41,948 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:41,948 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:42,326 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:42,326 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:42,949 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:43,326 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:43,410 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:43,412 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:43,413 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:43,414 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:44,326 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:44,327 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:44,882 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:44,884 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:44,885 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:44,885 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:45,327 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:45,328 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:46,328 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:46,368 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:46,370 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:46,371 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:46,372 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:47,328 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:47,865 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:47,867 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:47,867 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:47,868 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:48,040 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:48,041 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:36:48,041 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:36:48,329 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:48,329 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:49,419 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:49,421 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:49,422 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:49,422 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:50,330 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:50,330 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:50,884 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:50,885 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:50,885 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:50,886 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:51,330 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:52,330 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:52,334 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:52,335 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:52,336 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:52,337 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:53,331 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:53,338 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:53,816 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:53,818 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:53,819 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:53,820 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:54,332 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:54,332 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:55,325 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:55,327 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:55,327 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:55,328 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:55,332 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:56,332 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:56,892 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:56,894 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:56,894 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:56,895 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:57,333 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:58,333 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:36:58,375 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:36:58,375 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:58,377 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:58,378 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:58,379 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:36:59,334 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:36:59,885 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:36:59,887 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:36:59,887 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:36:59,889 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:00,334 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:00,335 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:01,350 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:01,352 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:01,353 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:01,356 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:02,335 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:02,335 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:02,430 DEBUG   SenderThread:77829 [sender.py:send():375] send: stats
+2023-10-11 03:37:02,834 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:02,836 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:02,837 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:02,838 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:03,041 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:37:03,042 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:37:03,336 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:04,197 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:04,336 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:04,359 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:04,363 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:04,364 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:04,364 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:05,336 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:05,839 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:05,841 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:05,842 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:05,843 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:06,337 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:06,337 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:07,299 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:07,301 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:07,301 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:07,303 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:07,337 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:08,338 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:08,824 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:08,825 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:08,826 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:08,827 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:09,338 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:09,828 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:10,302 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:10,304 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:10,304 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:10,305 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:10,339 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:10,339 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:11,752 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:11,754 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:11,755 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:11,756 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:12,339 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:12,340 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:13,219 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:13,221 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:13,221 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:13,223 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:13,340 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:14,340 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:14,723 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:14,725 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:14,726 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:14,727 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:15,340 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:15,728 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:16,150 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:16,151 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:16,152 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:16,153 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:16,341 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:16,341 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:17,634 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:17,636 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:17,636 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:17,637 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:18,041 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:37:18,041 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:37:18,341 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:18,342 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:19,179 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:19,180 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:19,181 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:19,181 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:19,342 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:20,342 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:20,602 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:20,603 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:20,604 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:20,607 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:21,343 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:21,608 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:22,088 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:22,089 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:22,090 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:22,091 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:22,343 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:22,344 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:23,567 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:23,569 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:23,569 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:23,571 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:24,344 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:24,345 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:25,056 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:25,058 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:25,058 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:25,060 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:25,345 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:26,345 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:26,645 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:26,646 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:26,647 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:26,648 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:26,649 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:27,345 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:28,105 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:28,107 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:28,108 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:28,109 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:28,346 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:28,346 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:29,533 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:29,535 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:29,536 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:29,537 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:30,347 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:30,347 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:31,013 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:31,015 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:31,016 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:31,017 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:31,347 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:32,018 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:32,348 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:32,433 DEBUG   SenderThread:77829 [sender.py:send():375] send: stats
+2023-10-11 03:37:32,496 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:32,498 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:32,499 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:32,500 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:33,041 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:37:33,042 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:37:33,348 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:34,003 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:34,006 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:34,006 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:34,007 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:34,349 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:34,349 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:35,421 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:35,423 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:35,423 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:35,424 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:36,349 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:36,350 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:36,909 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:36,911 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:36,911 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:36,912 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:37,350 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:37,913 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:38,350 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:38,386 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:38,388 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:38,388 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:38,390 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:39,351 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:39,827 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:39,828 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:39,828 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:39,830 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:40,351 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:40,352 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:41,334 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:41,336 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:41,336 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:41,337 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:41,352 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:42,352 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:42,815 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:42,816 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:42,817 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:42,818 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:43,353 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:43,819 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:44,299 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:44,300 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:44,301 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:44,302 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:44,353 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:44,353 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:45,800 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:45,802 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:45,802 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:45,804 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:46,354 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:46,354 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:47,246 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:47,248 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:47,248 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:47,249 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:47,354 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:48,041 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:37:48,041 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:37:48,355 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:48,779 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:48,781 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:48,782 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:48,783 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:49,355 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:49,784 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:50,226 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:50,228 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:50,228 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:50,229 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:50,356 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:50,356 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:51,684 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:51,686 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:51,687 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:51,687 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:52,356 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:52,357 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:53,180 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:53,181 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:53,182 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:53,183 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:53,357 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:54,357 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:54,617 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:54,619 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:54,620 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:54,620 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:55,358 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:55,621 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:37:56,094 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:56,096 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:56,097 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:56,098 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:56,358 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:56,359 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:57,572 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:57,574 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:57,574 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:57,576 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:58,359 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:37:58,359 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:37:59,094 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:37:59,096 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:37:59,097 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:37:59,098 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:37:59,360 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:00,360 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:00,526 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:00,528 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:00,529 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:00,529 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:01,360 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:01,530 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:38:01,981 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:01,983 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:01,984 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:01,985 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:02,361 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:02,361 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:02,436 DEBUG   SenderThread:77829 [sender.py:send():375] send: stats
+2023-10-11 03:38:03,041 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:38:03,041 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:38:03,523 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:03,524 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:03,526 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:03,526 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:04,362 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:04,362 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:04,954 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:04,956 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:04,957 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:04,958 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:05,362 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:06,362 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:06,402 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:06,404 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:06,405 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:06,406 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:07,363 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:07,407 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:38:07,879 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:07,881 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:07,882 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:07,883 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:08,363 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:08,364 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:09,313 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:09,315 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:09,315 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:09,317 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:09,364 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:10,364 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:10,794 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:10,796 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:10,797 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:10,799 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:11,365 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:12,279 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:12,281 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:12,282 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:12,283 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:12,365 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:12,365 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:13,284 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:38:13,748 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:13,749 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:13,750 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:13,751 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:14,366 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:14,366 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:15,199 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:15,201 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:15,202 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:15,203 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:15,366 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:16,366 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:16,685 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:16,687 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:16,688 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:16,689 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:17,367 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:18,159 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-11 03:38:18,159 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: stop_status
+2023-10-11 03:38:18,166 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:18,275 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:18,275 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:18,276 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:18,367 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:18,368 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:19,277 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:38:19,632 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:19,633 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:19,634 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:19,635 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:20,368 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:20,369 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:21,066 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:21,068 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:21,068 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:21,069 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:21,369 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:22,369 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:22,509 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:22,510 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:22,511 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:22,512 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:23,369 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:23,965 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:23,966 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:23,966 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:23,968 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:24,370 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:24,370 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:24,969 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:38:25,430 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:25,431 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:25,431 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:25,432 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:26,370 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:26,371 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:26,918 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:26,920 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:26,921 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:26,921 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:27,371 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:28,371 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:28,404 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:28,405 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:28,406 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:28,407 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:29,372 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:29,853 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:29,855 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:29,855 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:29,857 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:30,372 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:30,373 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:30,857 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: status_report
+2023-10-11 03:38:31,322 DEBUG   HandlerThread:77829 [handler.py:handle_request():144] handle_request: partial_history
+2023-10-11 03:38:31,324 DEBUG   SenderThread:77829 [sender.py:send():375] send: history
+2023-10-11 03:38:31,325 DEBUG   SenderThread:77829 [sender.py:send_request():402] send_request: summary_record
+2023-10-11 03:38:31,326 INFO    SenderThread:77829 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-11 03:38:31,372 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/wandb-summary.json
+2023-10-11 03:38:32,373 INFO    Thread-12 :77829 [dir_watcher.py:_on_file_modified():295] file/dir modified: /workspace/BakLLaVA/wandb/run-20231011_033502-wmknhqgg/files/output.log
+2023-10-11 03:38:32,440 DEBUG   SenderThread:77829 [sender.py:send():375] send: stats
