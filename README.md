@@ -4,6 +4,8 @@
 </p>
 
 
+A project in collaboration with LAION (www.laion.ai), Ontocord (www.ontocord.ai) and Skunkworks OSS AI group.
+
 Baking SOTA multimodality into language models.
 
 By implementing better base models, modified training process, custom datasets, and significant architecture changes to the original LLaVA implementation.
