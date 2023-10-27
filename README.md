@@ -3,6 +3,7 @@
   <img src="https://media.tenor.com/tmTgtSNZkPwAAAAC/baklava.gif" width="50%"> <br>
 </p>
 
+BakLLaVA v1 was trained thanks to our compute sponsors Together Compute (www.together.ai). BakLLaVA v1 can be found here: https://huggingface.co/SkunkworksAI/BakLLaVA-1
 
 A project in collaboration with LAION (www.laion.ai), Ontocord (www.ontocord.ai) and Skunkworks OSS AI group.
 
