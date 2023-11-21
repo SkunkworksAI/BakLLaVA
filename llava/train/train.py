@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 import json
 import logging
 import pathlib
-from typing import Dict, Optional, Sequence, List
+from typing import Dict, Optional, Sequence, List, Union
 
 import torch
 
@@ -41,7 +41,8 @@ import deepspeed
 import time
 from deepspeed.accelerator import get_accelerator
 import zipfile
-
+from webdataset_utils import get_wds_data
+import math
 
 local_rank = None
 
@@ -70,17 +71,21 @@ class ModelArguments:
 class DataArguments:
     dataset_type: str = "webdataset"
     lengths_path: Optional[str] = None
-    data_path: str = field(default=None,
+    data_path: Union[List[str], str] = field(default=None,
                            metadata={"help": "Path to the training data."})
     lazy_preprocess: bool = False
     is_multimodal: bool = False
     image_folder: Optional[str] = field(default=None)
     image_aspect_ratio: str = 'square'
     image_grid_pinpoints: Optional[str] = field(default=None)
+    train_data_weights: Optional[List[str]] = None
+    # dataloader_num_workers: Optional[int] = None
+    # seed: int = 0
 
 
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):
+    resume_from_checkpoint:bool = False
     deepspeed_config: str = field(default=None)
     lr: float = field(default=1e-3)
     beta1: float = field(default=0.5)
@@ -683,10 +688,12 @@ class LazySupervisedDataset(Dataset):
             image_file = self.list_data_dict[i]['image']
             image_folder = self.data_args.image_folder
             processor = self.data_args.image_processor
-            try:
-                image = Image.open(io.BytesIO(self.zip_file.read(image_file)))
-            except:
-                image = Image.open(io.BytesIO(self.zip_file.read(image_file)))
+            while True:
+                try:
+                    image = Image.open(io.BytesIO(self.zip_file.read(image_file)))
+                    break
+                except:
+                    pass
             if self.data_args.image_aspect_ratio == 'pad':
                 def expand2square(pil_img, background_color):
                     width, height = pil_img.size
@@ -760,7 +767,6 @@ class DataCollatorForSupervisedDataset(object):
                 batch['images'] = torch.stack(images)
             else:
                 batch['images'] = images
-        # print(batch['input_ids'].shape)
 
         return batch
 
@@ -783,7 +789,6 @@ class WdsProcessor:
             return result
 
     def preprocess_wds(self, data):
-
         
         image, sources = data
         has_image = 'image' in sources
@@ -819,26 +824,30 @@ class WdsProcessor:
         
         return data_dict
 
-
-def get_wds_dataset(tokenizer, data_args):
-    wds_processor = WdsProcessor(tokenizer, data_args)
+def get_wds_dataset(tokenizer, data_args, training_args):
+    round_fn = math.ceil
     
-    dataset = (
-        wds.WebDataset(
-            data_args.data_path,
-            # splitter=wds.split_by_worker, 
-            nodesplitter=wds.split_by_node
-            )
-        .decode("rgb")
-        .to_tuple("png", "json")
-        .map(wds_processor.preprocess_wds)
-    )
     if data_args.lengths_path:
         with open(data_args.lengths_path, 'r') as f:
             lengths = json.load(f)['length_list']
-            training_args.max_steps = len(lengths)
+            num_samples = len(lengths)
+            global_batch_size = training_args.per_device_train_batch_size  * training_args.world_size
+            num_batches = round_fn(num_samples / global_batch_size)
+            num_workers = max(1, training_args.dataloader_num_workers)
+            num_worker_batches = round_fn(num_batches / num_workers)  # per dataloader worker
+            num_batches = num_worker_batches * num_workers
+            training_args.max_steps = num_batches
+            data_args.train_num_samples = num_batches
+    
+    data_args.tokenizer = tokenizer
+    data_args.dataloader_num_workers = training_args.dataloader_num_workers
+    data_args.batch_size = training_args.per_device_train_batch_size
+    data_args.world_size = training_args.world_size
+    wds_processor = WdsProcessor(tokenizer, data_args)
+    data_collator = DataCollatorForSupervisedDataset(tokenizer)
+    train_data = get_wds_data(data_args,is_train=True, wds_processor=wds_processor.preprocess_wds) 
     data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
-    return dict(train_dataset=dataset,
+    return dict(train_dataset=train_data,
                 eval_dataset=None,
                 data_collator=data_collator)
 
@@ -1030,6 +1039,7 @@ def train():
         data_module = get_wds_dataset(
             tokenizer=tokenizer, 
             data_args=data_args, 
+            training_args=training_args
                 )
 
         
