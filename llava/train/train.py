@@ -70,6 +70,7 @@ class ModelArguments:
 @dataclass
 class DataArguments:
     dataset_type: str = "webdataset"
+    dataset_resampled: bool = False
     lengths_path: Optional[str] = None
     data_path: Union[List[str], str] = field(default=None,
                            metadata={"help": "Path to the training data."})
@@ -85,6 +86,7 @@ class DataArguments:
 
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):
+    num_training_samples:int = field(default=None)
     resume_from_checkpoint:bool = False
     deepspeed_config: str = field(default=None)
     lr: float = field(default=1e-3)
@@ -831,13 +833,15 @@ def get_wds_dataset(tokenizer, data_args, training_args):
         with open(data_args.lengths_path, 'r') as f:
             lengths = json.load(f)['length_list']
             num_samples = len(lengths)
-            global_batch_size = training_args.per_device_train_batch_size  * training_args.world_size
-            num_batches = round_fn(num_samples / global_batch_size)
-            num_workers = max(1, training_args.dataloader_num_workers)
-            num_worker_batches = round_fn(num_batches / num_workers)  # per dataloader worker
-            num_batches = num_worker_batches * num_workers
-            training_args.max_steps = num_batches
-            data_args.train_num_samples = num_batches
+    elif training_args.num_training_samples:
+        num_samples = training_args.num_training_samples
+    global_batch_size = training_args.per_device_train_batch_size  * training_args.world_size
+    num_batches = round_fn(num_samples / global_batch_size)
+    num_workers = max(1, training_args.dataloader_num_workers)
+    num_worker_batches = round_fn(num_batches / num_workers)  # per dataloader worker
+    num_batches = num_worker_batches * num_workers
+    training_args.max_steps = num_batches
+    data_args.train_num_samples = num_batches
     
     data_args.tokenizer = tokenizer
     data_args.dataloader_num_workers = training_args.dataloader_num_workers
