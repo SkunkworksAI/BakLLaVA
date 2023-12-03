@@ -129,6 +129,8 @@ class TrainingArguments(transformers.TrainingArguments):
     lora_weight_path: str = ""
     lora_bias: str = "none"
     group_by_modality_length: bool = field(default=False)
+    token: str = None
+    train_mode: str = "visual_instruction" # ["visual_instruction", "language_pretraining"]
 
 
 def maybe_zero_3(param, ignore_status=False, name=None):
@@ -798,7 +800,7 @@ class WdsProcessor:
         if has_image:
             if self.data_args.image_aspect_ratio == 'pad':
                     
-                image = self.expand2square(image, tuple(int(x*255) for x in processor.image_mean))
+                image = self.expand2square(image, tuple(int(x*255) for x in self.data_args.image_processor.image_mean))
                 image = self.data_args.image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
             else:
                 image = self.data_args.image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
@@ -826,7 +828,27 @@ class WdsProcessor:
         
         return data_dict
 
+# class LanguagePretrainingProcessor:
+
+#     def __init__(self, tokenizer, training_args):
+#         self.tokenizer = tokenizer
+#         self.training_args = training_args
+
+
+#     def preprocess_wds(self, data):
+#         max_length = self.training_args.model_max_length
+#         data = tokenizer(
+#             data, 
+#             max_length=max_length,
+#             return_tensors="pt",
+#             padding="longest",
+#             truncation=True
+#             )
+#         return data["input_ids"]
+
 def get_wds_dataset(tokenizer, data_args, training_args):
+    visual_instruction = training_args.train_mode == "visual_instruction"
+
     round_fn = math.ceil
     
     if data_args.lengths_path:
@@ -841,16 +863,15 @@ def get_wds_dataset(tokenizer, data_args, training_args):
     num_worker_batches = round_fn(num_batches / num_workers)  # per dataloader worker
     num_batches = num_worker_batches * num_workers
     training_args.max_steps = num_batches
-    data_args.train_num_samples = num_batches
+    data_args.train_num_samples = training_args.num_training_samples
     
     data_args.tokenizer = tokenizer
     data_args.dataloader_num_workers = training_args.dataloader_num_workers
     data_args.batch_size = training_args.per_device_train_batch_size
     data_args.world_size = training_args.world_size
     wds_processor = WdsProcessor(tokenizer, data_args)
-    data_collator = DataCollatorForSupervisedDataset(tokenizer)
-    train_data = get_wds_data(data_args,is_train=True, wds_processor=wds_processor.preprocess_wds) 
-    data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
+    train_data = get_wds_data(data_args, is_train=True, wds_processor=wds_processor.preprocess_wds) 
+    data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer) if visual_instruction else None 
     return dict(train_dataset=train_data,
                 eval_dataset=None,
                 data_collator=data_collator)
@@ -914,12 +935,14 @@ def train():
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
+                token=training_args.token,
                 **bnb_model_from_pretrained_args
             )
     else:
         model = transformers.LlamaForCausalLM.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
+            token=training_args.token,
             **bnb_model_from_pretrained_args
         )
     model.config.use_cache = False
