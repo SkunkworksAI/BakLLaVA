@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 
 from transformers import CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig
+from open_clip import create_model_from_pretrained
 
 
 class CLIPVisionTower(nn.Module):
@@ -20,8 +21,11 @@ class CLIPVisionTower(nn.Module):
             self.cfg_only = CLIPVisionConfig.from_pretrained(self.vision_tower_name)
 
     def load_model(self):
-        self.image_processor = CLIPImageProcessor.from_pretrained(self.vision_tower_name)
-        self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
+        if self.vision_tower_name.startswith("apple"):
+            self.vision_tower, self.image_processor = create_model_from_pretrained(self.vision_tower_name)
+        else:
+            self.image_processor = CLIPImageProcessor.from_pretrained(self.vision_tower_name)
+            self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
         self.vision_tower.requires_grad_(False)
 
         self.is_loaded = True
