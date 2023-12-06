@@ -2,7 +2,31 @@ import torch
 import torch.nn as nn
 
 from transformers import CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig
-from open_clip import create_model_from_pretrained
+from huggingface_hub import hf_hub_download
+import json
+
+
+def get_open_clip_image_processor(model_name):
+    config_path = hf_hub_download(model_name, filename="open_clip_config.json")
+
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+    image_size = config['model_cfg']['vision_cfg']['image_size']
+    image_mean = config['preprocess_cfg']['mean']
+    image_std = config['preprocess_cfg']['std']
+    size = {"shortest_edge": image_size}
+    crop_size = {
+      "height": image_size,
+      "width": image_size
+    }
+
+    return CLIPImageProcessor(
+            image_size=image_size, 
+            image_mean=image_mean, 
+            image_std=image_std,
+            crop_size=crop_size,
+            size=size
+            )
 
 
 class CLIPVisionTower(nn.Module):
@@ -21,10 +45,10 @@ class CLIPVisionTower(nn.Module):
             self.cfg_only = CLIPVisionConfig.from_pretrained(self.vision_tower_name)
 
     def load_model(self):
+        self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
         if self.vision_tower_name.startswith("apple"):
-            self.vision_tower, self.image_processor = create_model_from_pretrained(self.vision_tower_name)
+            self.image_processor = get_open_clip_image_processor(self.vision_tower_name)
         else:
-            self.image_processor = CLIPImageProcessor.from_pretrained(self.vision_tower_name)
             self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
         self.vision_tower.requires_grad_(False)
 
@@ -42,6 +66,7 @@ class CLIPVisionTower(nn.Module):
 
     @torch.no_grad()
     def forward(self, images):
+
         if type(images) is list:
             image_features = []
             for image in images:
