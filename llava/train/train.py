@@ -797,13 +797,14 @@ class WdsProcessor:
         image, sources = data
         has_image = 'image' in sources
         sources = [sources]
+        image_processor = self.data_args.image_processor
         if has_image:
             if self.data_args.image_aspect_ratio == 'pad':
                     
-                image = self.expand2square(image, tuple(int(x*255) for x in self.data_args.image_processor.image_mean))
-                image = self.data_args.image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+                image = self.expand2square(image, tuple(int(x*255) for x in image_processor.image_mean))
+                image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
             else:
-                image = self.data_args.image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+                image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
             sources = preprocess_multimodal(
                 copy.deepcopy([e["conversations"] for e in sources]),
                 self.data_args)
@@ -827,24 +828,6 @@ class WdsProcessor:
             data_dict['image'] = torch.zeros(3, crop_size['height'], crop_size['width'])
         
         return data_dict
-
-# class LanguagePretrainingProcessor:
-
-#     def __init__(self, tokenizer, training_args):
-#         self.tokenizer = tokenizer
-#         self.training_args = training_args
-
-
-#     def preprocess_wds(self, data):
-#         max_length = self.training_args.model_max_length
-#         data = tokenizer(
-#             data, 
-#             max_length=max_length,
-#             return_tensors="pt",
-#             padding="longest",
-#             truncation=True
-#             )
-#         return data["input_ids"]
 
 def get_wds_dataset(tokenizer, data_args, training_args):
     visual_instruction = training_args.train_mode == "visual_instruction"
