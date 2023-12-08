@@ -281,7 +281,7 @@ def image_text_dict_collation_fn(samples):
     
     return result
 
-def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
+def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None, train_mode=None):
     if args.data_path and (args.train_data_weights is None):
          args.train_data_weights = [1.0] * len(args.data_path)
          
@@ -364,17 +364,31 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
     #     ), f"Webdataset only support HFTokenizer, HFGPT2Tokenizer or HFGPT2TokenizerFast"
     
     # tokenize = args.tokenizer.tokenize
+
+    if train_mode == "visual_instructions":
     
-    pipeline.extend([
-        # wds.select(filter_no_caption_or_no_image),
-        wds.decode("pilrgb", handler=log_and_continue),
-        wds.rename(image="jpg;png;jpeg;webp", text="json"),
-        wds.to_tuple("image", "text"),
-        wds.map(wds_processor)
-        # wds.map_dict(image=preprocess_img,  text=lambda text: tokenize(text)[0]),
-       
-        # wds.batched(args.batch_size, collation_fn=image_text_dict_collation_fn, partial=not is_train)
-    ])
+        pipeline.extend([
+            # wds.select(filter_no_caption_or_no_image),
+            wds.decode("pilrgb", handler=log_and_continue),
+            wds.rename(image="jpg;png;jpeg;webp", text="json"),
+            wds.to_tuple("image", "text"),
+            wds.map(wds_processor)
+            # wds.map_dict(image=preprocess_img,  text=lambda text: tokenize(text)[0]),
+        
+            # wds.batched(args.batch_size, collation_fn=image_text_dict_collation_fn, partial=not is_train)
+        ])
+
+    elif train_mode == "audio_instructions":
+        pipeline.extend([
+            # wds.select(filter_no_caption_or_no_image),
+            wds.decode(wds.torch_audio, handler=log_and_continue),
+            wds.rename(audio="flac;mp3;wav", text="json"),
+            wds.to_tuple("audio", "text"),
+            wds.map(wds_processor)
+            # wds.map_dict(image=preprocess_img,  text=lambda text: tokenize(text)[0]),
+        
+            # wds.batched(args.batch_size, collation_fn=image_text_dict_collation_fn, partial=not is_train)
+        ])
 
     dataset = wds.DataPipeline(*pipeline)
 

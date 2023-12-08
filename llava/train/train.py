@@ -26,7 +26,7 @@ import torch
 
 import transformers
 
-from llava.constants import IGNORE_INDEX, IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
+from llava.constants import *
 from torch.utils.data import Dataset
 from llava.train.llava_trainer import LLaVATrainer
 
@@ -43,6 +43,8 @@ from deepspeed.accelerator import get_accelerator
 import zipfile
 from webdataset_utils import get_wds_data
 import math
+import numpy as np
+from transformers.tokenization_utils_base import BatchEncoding
 
 local_rank = None
 
@@ -59,11 +61,14 @@ class ModelArguments:
     freeze_backbone: bool = field(default=False)
     tune_mm_mlp_adapter: bool = field(default=False)
     vision_tower: Optional[str] = field(default=None)
+    audio_tower: Optional[str] = field(default=None)
     mm_vision_select_layer: Optional[int] = field(default=-1)   # default to the last layer
+    mm_audio_select_layer: Optional[int] = field(default=-1)
     pretrain_mm_mlp_adapter: Optional[str] = field(default=None)
     mm_projector_type: Optional[str] = field(default='linear')
     mm_use_im_start_end: bool = field(default=False)
-    mm_use_im_patch_token: bool = field(default=True)
+    mm_use_aud_start_end: bool = field(default=False)
+    mm_use_audio_patch_token: bool = field(default=True)
     mm_vision_select_feature: Optional[str] = field(default="patch")
 
 
@@ -130,7 +135,7 @@ class TrainingArguments(transformers.TrainingArguments):
     lora_bias: str = "none"
     group_by_modality_length: bool = field(default=False)
     token: str = None
-    train_mode: str = "visual_instruction" # ["visual_instruction", "language_pretraining"]
+    train_mode: str = "visual_instruction" # ["visual_instruction", "language_pretraining", "audio_instructions"]
 
 
 def maybe_zero_3(param, ignore_status=False, name=None):
@@ -323,27 +328,45 @@ def _add_speaker_and_signal(header, source, get_conversation=True):
     conversation += BEGIN_SIGNAL
     return conversation
 
+def preprocess_audio(sources):
+    return [
+        {
+        "conversations": [
+            {
+                "from": "human",
+                "value": f"{DEFAULT_AUD_TOKEN}\nWrite an one-sentence audio caption to describe the sounds." 
+            },
+            {
+                "from": "gpt",
+                "value": s["text"][0]
+            }
+        ]
+    } for s in sources]
+
 
 def preprocess_multimodal(
     sources: Sequence[str],
-    data_args: DataArguments
+    data_args: DataArguments,
+    has_audio=False,
 ) -> Dict:
     is_multimodal = data_args.is_multimodal
     if not is_multimodal:
         return sources
 
+    DEFAULT_TOKEN = DEFAULT_AUD_TOKEN if has_audio else DEFAULT_IMAGE_TOKEN
+    DEFAULT_END_TOKEN = DEFAULT_AUD_END_TOKEN if has_audio else DEFAULT_IM_END_TOKEN
     for source in sources:
         for sentence in source:
-            if DEFAULT_IMAGE_TOKEN in sentence['value']:
-                sentence['value'] = sentence['value'].replace(DEFAULT_IMAGE_TOKEN, '').strip()
-                sentence['value'] = DEFAULT_IMAGE_TOKEN + '\n' + sentence['value']
+            if DEFAULT_TOKEN in sentence['value']:
+                sentence['value'] = sentence['value'].replace(DEFAULT_TOKEN, '').strip()
+                sentence['value'] = DEFAULT_TOKEN + '\n' + sentence['value']
                 sentence['value'] = sentence['value'].strip()
                 if "mmtag" in conversation_lib.default_conversation.version:
-                    sentence['value'] = sentence['value'].replace(DEFAULT_IMAGE_TOKEN, '<Image>' + DEFAULT_IMAGE_TOKEN + '</Image>')
-            replace_token = DEFAULT_IMAGE_TOKEN
+                    sentence['value'] = sentence['value'].replace(DEFAULT_TOKEN, '<Image>' + DEFAULT_IMAGE_TOKEN + '</Image>')
+            replace_token = DEFAULT_TOKEN
             if data_args.mm_use_im_start_end:
-                replace_token = DEFAULT_IM_START_TOKEN + replace_token + DEFAULT_IM_END_TOKEN
-            sentence["value"] = sentence["value"].replace(DEFAULT_IMAGE_TOKEN, replace_token)
+                replace_token = DEFAULT_IM_START_TOKEN + replace_token + DEFAULT_END_TOKEN
+            sentence["value"] = sentence["value"].replace(DEFAULT_TOKEN, replace_token)
 
     return sources
 
@@ -581,17 +604,20 @@ def preprocess_mpt(
 def preprocess_plain(
     sources: Sequence[str],
     tokenizer: transformers.PreTrainedTokenizer,
+    has_audio: bool = False
 ) -> Dict:
     # add end signal and concatenate together
     conversations = []
+    DEFAULT_TOKEN = DEFAULT_AUD_TOKEN if has_audio else DEFAULT_IMAGE_TOKEN
+    TOKEN_INDEX = AUDIO_TOKEN_INDEX if has_audio else IMAGE_TOKEN_INDEX
     for source in sources:
         assert len(source) == 2
-        assert DEFAULT_IMAGE_TOKEN in source[0]['value']
-        source[0]['value'] = DEFAULT_IMAGE_TOKEN
+        assert DEFAULT_TOKEN in source[0]['value']
+        source[0]['value'] = DEFAULT_TOKEN
         conversation = source[0]['value'] + source[1]['value'] + conversation_lib.default_conversation.sep
         conversations.append(conversation)
     # tokenize conversations
-    input_ids = [tokenizer_image_token(prompt, tokenizer, return_tensors='pt') for prompt in conversations]
+    input_ids = [tokenizer_image_token(prompt, tokenizer, return_tensors='pt', image_token_index=TOKEN_INDEX) for prompt in conversations]
     targets = copy.deepcopy(input_ids)
     for target, source in zip(targets, sources):
         tokenized_len = len(tokenizer_image_token(source[0]['value'], tokenizer))
@@ -603,7 +629,8 @@ def preprocess_plain(
 def preprocess(
     sources: Sequence[str],
     tokenizer: transformers.PreTrainedTokenizer,
-    has_image: bool = False
+    has_audio: bool = False,
+    has_image: bool = True
 ) -> Dict:
     """
     Given a list of sources, each is a conversation list. This transform:
@@ -613,7 +640,7 @@ def preprocess(
     4. Make a deepcopy as the target. Mask human words with IGNORE_INDEX.
     """
     if conversation_lib.default_conversation.sep_style == conversation_lib.SeparatorStyle.PLAIN:
-        return preprocess_plain(sources, tokenizer)
+        return preprocess_plain(sources, tokenizer, has_audio=has_audio)
     if conversation_lib.default_conversation.sep_style == conversation_lib.SeparatorStyle.LLAMA_2:
         return preprocess_llama_2(sources, tokenizer, has_image=has_image)
     if conversation_lib.default_conversation.version.startswith("v1"):
@@ -691,7 +718,7 @@ class LazySupervisedDataset(Dataset):
         if 'image' in sources[0]:
             image_file = self.list_data_dict[i]['image']
             image_folder = self.data_args.image_folder
-            processor = self.data_args.image_processor
+            processor = self.data_args.processor
             while True:
                 try:
                     image = Image.open(io.BytesIO(self.zip_file.read(image_file)))
@@ -733,7 +760,7 @@ class LazySupervisedDataset(Dataset):
             data_dict['image'] = image
         elif self.data_args.is_multimodal:
             # image does not exist in the data, but the model is multimodal
-            crop_size = self.data_args.image_processor.crop_size
+            crop_size = self.data_args.processor.crop_size
             data_dict['image'] = torch.zeros(3, crop_size['height'], crop_size['width'])
         return data_dict
 
@@ -765,12 +792,17 @@ class DataCollatorForSupervisedDataset(object):
             attention_mask=input_ids.ne(self.tokenizer.pad_token_id),
         )
 
-        if 'image' in instances[0]:
-            images = [instance['image'] for instance in instances]
-            if all(x is not None and x.shape == images[0].shape for x in images):
-                batch['images'] = torch.stack(images)
+        if 'multimodal' in instances[0]:
+            multimodal = [instance['multimodal'] for instance in instances]
+           
+            if not isinstance(multimodal[0], BatchEncoding) and all(x is not None and x.shape == multimodal[0].shape for x in multimodal):
+                batch['multimodal'] = torch.stack(multimodal)
+            elif isinstance(multimodal[0], BatchEncoding) and all(x['input_features'] is not None and x['input_features'].shape == multimodal[0]['input_features'].shape for x in multimodal):
+                multimodal_stack = torch.stack([m['input_features'].squeeze(0) for m in multimodal])
+                is_longer = torch.stack([m['is_longer'].squeeze(0) for m in multimodal])
+                batch['multimodal'] = {'input_features': multimodal_stack, 'is_longer': is_longer}
             else:
-                batch['images'] = images
+                batch['multimodal'] = multimodal
 
         return batch
 
@@ -778,7 +810,7 @@ class WdsProcessor:
     def __init__(self, tokenizer, data_args):
         self.data_args = data_args
         self.tokenizer = tokenizer
-        # processor = self.data_args.image_processor
+        # processor = self.data_args.processor
     def expand2square(self, pil_img, background_color):
         width, height = pil_img.size
         if width == height:
@@ -794,17 +826,25 @@ class WdsProcessor:
 
     def preprocess_wds(self, data):
         
-        image, sources = data
+        multimodal, sources = data
         has_image = 'image' in sources
+        has_audio = self.data_args.train_mode == "audio_instructions"
         sources = [sources]
-        image_processor = self.data_args.image_processor
+        processor = self.data_args.processor
         if has_image:
             if self.data_args.image_aspect_ratio == 'pad':
                     
-                image = self.expand2square(image, tuple(int(x*255) for x in image_processor.image_mean))
-                image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+                image = self.expand2square(multimodal, tuple(int(x*255) for x in processor.image_mean))
+                image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
             else:
-                image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+                image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+            sources = preprocess_multimodal(
+                copy.deepcopy([e["conversations"] for e in sources]),
+                self.data_args)
+        elif has_audio:
+            audio, sr = multimodal
+            audio = processor(audios=np.array(audio), return_tensors="pt", sampling_rate=sr)
+            sources = preprocess_audio(sources)
             sources = preprocess_multimodal(
                 copy.deepcopy([e["conversations"] for e in sources]),
                 self.data_args)
@@ -814,23 +854,27 @@ class WdsProcessor:
         data_dict = preprocess(
                 sources,
                 self.tokenizer,
-                has_image=has_image)
+                has_image=has_image,
+                has_audio=has_audio
+                )
 
         data_dict = dict(input_ids=data_dict["input_ids"][0],
                              labels=data_dict["labels"][0])
 
 
         if has_image:
-            data_dict['image'] = image
+            data_dict['multimodal'] = image
+        elif has_audio:
+            data_dict['multimodal'] = audio
         elif self.data_args.is_multimodal:
             # image does not exist in the data, but the model is multimodal
-            crop_size = self.data_args.image_processor.crop_size
-            data_dict['image'] = torch.zeros(3, crop_size['height'], crop_size['width'])
+            crop_size = self.data_args.processor.crop_size
+            data_dict['multimodal'] = torch.zeros(3, crop_size['height'], crop_size['width'])
         
         return data_dict
 
 def get_wds_dataset(tokenizer, data_args, training_args):
-    visual_instruction = training_args.train_mode == "visual_instruction"
+    train_mode = training_args.train_mode
 
     round_fn = math.ceil
     
@@ -847,14 +891,14 @@ def get_wds_dataset(tokenizer, data_args, training_args):
     num_batches = num_worker_batches * num_workers
     training_args.max_steps = num_batches
     data_args.train_num_samples = training_args.num_training_samples
-    
+    data_args.train_mode = train_mode
     data_args.tokenizer = tokenizer
     data_args.dataloader_num_workers = training_args.dataloader_num_workers
     data_args.batch_size = training_args.per_device_train_batch_size
     data_args.world_size = training_args.world_size
     wds_processor = WdsProcessor(tokenizer, data_args)
-    train_data = get_wds_data(data_args, is_train=True, wds_processor=wds_processor.preprocess_wds) 
-    data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer) if visual_instruction else None 
+    train_data = get_wds_data(data_args, is_train=True, wds_processor=wds_processor.preprocess_wds, train_mode=train_mode) 
+    data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
     return dict(train_dataset=train_data,
                 eval_dataset=None,
                 data_collator=data_collator)
@@ -898,7 +942,7 @@ def train():
             )
         ))
 
-    if model_args.vision_tower is not None:
+    if model_args.vision_tower is not None or model_args.audio_tower is not None:
         if 'mpt' in model_args.model_name_or_path:
             config = transformers.AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
             config.attn_config['attn_impl'] = training_args.mpt_attn_impl
@@ -1005,7 +1049,7 @@ def train():
         vision_tower = model.get_vision_tower()
         vision_tower.to(dtype=torch.bfloat16 if training_args.bf16 else torch.float16, device=training_args.device)
 
-        data_args.image_processor = vision_tower.image_processor
+        data_args.processor = vision_tower.image_processor
         data_args.is_multimodal = True
 
         model.config.image_aspect_ratio = data_args.image_aspect_ratio
@@ -1029,6 +1073,40 @@ def train():
         training_args.use_im_start_end = model_args.mm_use_im_start_end
         model.config.mm_use_im_patch_token = model_args.mm_use_im_patch_token
         model.initialize_vision_tokenizer(model_args, tokenizer=tokenizer)
+
+    elif model_args.audio_tower is not None:
+        model.get_model().initialize_audio_modules(
+            model_args=model_args,
+            fsdp=training_args.fsdp
+        )
+        
+        audio_tower = model.get_audio_tower()
+        audio_tower.to(dtype=torch.bfloat16 if training_args.bf16 else torch.float16, device=training_args.device)
+
+        data_args.processor = audio_tower.audio_processor
+        data_args.is_multimodal = True
+
+        # model.config.image_aspect_ratio = data_args.image_aspect_ratio
+        # model.config.image_grid_pinpoints = data_args.image_grid_pinpoints
+
+        model.config.tune_mm_mlp_adapter = training_args.tune_mm_mlp_adapter = model_args.tune_mm_mlp_adapter
+        if model_args.tune_mm_mlp_adapter:
+            model.requires_grad_(False)
+            for p in model.get_model().mm_projector.parameters():
+                p.requires_grad = True
+
+        model.config.freeze_mm_mlp_adapter = training_args.freeze_mm_mlp_adapter
+        if training_args.freeze_mm_mlp_adapter:
+            for p in model.get_model().mm_projector.parameters():
+                p.requires_grad = False
+
+        if training_args.bits in [4, 8]:
+            model.get_model().mm_projector.to(dtype=compute_dtype, device=training_args.device)
+
+        model.config.mm_use_aud_start_end = data_args.mm_use_aud_start_end = model_args.mm_use_aud_start_end
+        training_args.use_aud_start_end = model_args.mm_use_aud_start_end
+        # model.config.mm_use_im_patch_token = model_args.mm_use_im_patch_token
+        model.initialize_audio_tokenizer(model_args, tokenizer=tokenizer)
 
     if training_args.bits in [4, 8]:
         from peft.tuners.lora import LoraLayer
