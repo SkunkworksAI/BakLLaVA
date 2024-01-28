@@ -5,7 +5,6 @@ from transformers import CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig
 from huggingface_hub import hf_hub_download
 import json
 
-
 def get_open_clip_image_processor(model_name):
     config_path = hf_hub_download(model_name, filename="open_clip_config.json")
 
@@ -38,7 +37,6 @@ class CLIPVisionTower(nn.Module):
         self.vision_tower_name = vision_tower
         self.select_layer = args.mm_vision_select_layer
         self.select_feature = getattr(args, 'mm_vision_select_feature', 'patch')
-
         if not delay_load:
             self.load_model()
         else:
@@ -46,12 +44,11 @@ class CLIPVisionTower(nn.Module):
 
     def load_model(self):
         self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
-        if self.vision_tower_name.startswith("apple"):
+        if self.vision_tower_name.startswith("apple") or self.vision_tower_name.startswith("laion"):
             self.image_processor = get_open_clip_image_processor(self.vision_tower_name)
         else:
-            self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
+            self.image_processor = CLIPImageProcessor.from_pretrained(self.vision_tower_name)
 
-        self.image_processor = CLIPImageProcessor(self.vision_tower_name)
         self.vision_tower.requires_grad_(False)
 
         self.is_loaded = True
@@ -68,7 +65,6 @@ class CLIPVisionTower(nn.Module):
 
     @torch.no_grad()
     def forward(self, images):
-
         if type(images) is list:
             image_features = []
             for image in images:
