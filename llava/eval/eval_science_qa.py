@@ -13,6 +13,8 @@ def get_args():
     parser.add_argument('--output-result', type=str)
     parser.add_argument('--split', type=str, default='test')
     parser.add_argument('--options', type=list, default=["A", "B", "C", "D", "E"])
+    parser.add_argument('--pid-splits-path')
+    parser.add_argument('--problems-path')
     return parser.parse_args()
 
 
@@ -39,8 +41,8 @@ if __name__ == "__main__":
     args = get_args()
 
     base_dir = args.base_dir
-    split_indices = json.load(open(os.path.join(base_dir, "pid_splits.json")))[args.split]
-    problems = json.load(open(os.path.join(base_dir, "problems.json")))
+    split_indices = json.load(open(args.pid_splits_path))[args.split]
+    problems = json.load(open(args.problems_path))
     predictions = [json.loads(line) for line in open(args.result_file)]
     predictions = {pred['question_id']: pred for pred in predictions}
     split_problems = {idx: problems[idx] for idx in split_indices}
@@ -54,18 +56,26 @@ if __name__ == "__main__":
     sqa_results['outputs'] = {}
 
     for prob_id, prob in split_problems.items():
+        # prob_id = f'{args.split}/{prob_id}'
         if prob_id not in predictions:
-            continue
-        pred = predictions[prob_id]
-        pred_text = pred['text']
-
-        pattern = re.compile(r'The answer is ([A-Z]).')
-        res = pattern.findall(pred_text)
-        if len(res) == 1:
-            answer = res[0]  # 'A', 'B', ...
+            pred = {'text': 'FAILED', 'prompt': 'Unknown'}
+            pred_text = 'FAILED'
         else:
-            answer = "FAILED"
+            pred = predictions[prob_id]
+            pred_text = pred['text']
 
+        if pred_text in args.options:
+            answer = pred_text
+        elif len(pred_text) >= 3 and pred_text[0] in args.options and pred_text[1:3] == ". ":
+            answer = pred_text[0]
+        else:
+            pattern = re.compile(r'The answer is ([A-Z])')
+            res = pattern.findall(pred_text)
+            if len(res) == 1:
+                answer = res[0]  # 'A', 'B', ...
+            else:
+                answer = "FAILED"
+    
         pred_idx = get_pred_idx(answer, prob['choices'], args.options)
 
         analysis = {
@@ -85,9 +95,16 @@ if __name__ == "__main__":
         else:
             results['incorrect'].append(analysis)
 
+
     correct = len(results['correct'])
     total = len(results['correct']) + len(results['incorrect'])
-    print(f'Total: {total}, Correct: {correct}, Accuracy: {correct / total * 100:.2f}%')
+    ###### IMG ######
+    multimodal_correct = len([x for x in results['correct'] if x['is_multimodal']])
+    multimodal_incorrect = len([x for x in results['incorrect'] if x['is_multimodal']])
+    multimodal_total = multimodal_correct + multimodal_incorrect
+    ###### IMG ######
+
+    print(f'Total: {total}, Correct: {correct}, Accuracy: {correct / total * 100:.2f}%, IMG-Accuracy: {multimodal_correct / multimodal_total * 100:.2f}%')
 
     sqa_results['acc'] = correct / total * 100
     sqa_results['correct'] = correct
