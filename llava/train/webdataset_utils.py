@@ -281,6 +281,20 @@ def image_text_dict_collation_fn(samples):
     
     return result
 
+def decode_image(png_bytes):
+    return Image.open(BytesIO(png_bytes))
+
+
+def process_sample(sample):
+
+    if "png" not in sample:
+        sample["png"] = b''
+    else:
+        sample["png"] = decode_image(sample["png"])
+    
+    sample = {"png": sample["png"], "json": sample["json"]}
+    return sample
+
 def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
     if args.data_path and (args.train_data_weights is None):
          args.train_data_weights = [1.0] * len(args.data_path)
@@ -316,12 +330,13 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
             complete_url_list.extend(current_url_list)
             per_url_weight = weights / len(current_url_list)
             complete_weights.extend([per_url_weight] * len(current_url_list))
-        pipeline = [ResampledShards2(
-            complete_url_list,
-            weights=complete_weights,
-            deterministic=True,
-            epoch=shared_epoch,
-        )]
+        # pipeline = [ResampledShards2(
+        #     complete_url_list,
+        #     weights=complete_weights,
+        #     deterministic=True,
+        #     epoch=shared_epoch,
+        # )]
+        pipeline = [wds.SimpleShardList(complete_url_list)]
     else:
         # assert args.train_data_upsampling_factors is None,\
         #    "--train_data_upsampling_factors is only supported when sampling with replacement (with --dataset-resampled)."
@@ -365,6 +380,7 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
     
     # tokenize = args.tokenizer.tokenize
     
+        
     pipeline.extend([
         # wds.select(filter_no_caption_or_no_image),
         wds.decode("pilrgb", handler=log_and_continue),
@@ -375,6 +391,12 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
        
         # wds.batched(args.batch_size, collation_fn=image_text_dict_collation_fn, partial=not is_train)
     ])
+    # pipeline.extend([
+    #     wds.map(process_sample),
+    #     wds.rename(image="jpg;png;jpeg;webp", text="json"),
+    #     wds.to_tuple("image", "text")
+    #     wds.map(wds_processor)
+    #     ])
 
     dataset = wds.DataPipeline(*pipeline)
 
@@ -391,6 +413,7 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
         num_batches = num_worker_batches * num_workers
         num_samples = num_batches * global_batch_size
         dataset = dataset.with_epoch(num_worker_batches)  # each worker is iterating over this
+        # dataset = dataset.with_epoch(num_samples)
     else:
         # last batches are partial, eval is done on single (master) node
         num_batches = math.ceil(num_samples / args.batch_size)
