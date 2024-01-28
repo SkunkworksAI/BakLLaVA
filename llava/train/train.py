@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 import json
 import logging
 import pathlib
-from typing import Dict, Optional, Sequence, List
+from typing import Dict, Optional, Sequence, List, Union
 
 import torch
 
@@ -35,7 +35,14 @@ from llava.model import *
 from llava.mm_utils import tokenizer_image_token
 
 from PIL import Image
-
+import webdataset as wds
+import io
+import deepspeed
+import time
+from deepspeed.accelerator import get_accelerator
+import zipfile
+from webdataset_utils import get_wds_data
+import math
 
 local_rank = None
 
@@ -62,17 +69,30 @@ class ModelArguments:
 
 @dataclass
 class DataArguments:
-    data_path: str = field(default=None,
+    dataset_type: str = "webdataset"
+    dataset_resampled: bool = False
+    lengths_path: Optional[str] = None
+    data_path: Union[List[str], str] = field(default=None,
                            metadata={"help": "Path to the training data."})
     lazy_preprocess: bool = False
     is_multimodal: bool = False
     image_folder: Optional[str] = field(default=None)
     image_aspect_ratio: str = 'square'
     image_grid_pinpoints: Optional[str] = field(default=None)
+    train_data_weights: Optional[List[str]] = None
+    # dataloader_num_workers: Optional[int] = None
+    # seed: int = 0
 
 
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):
+    num_training_samples:int = field(default=None)
+    resume_from_checkpoint:bool = False
+    deepspeed_config: str = field(default=None)
+    lr: float = field(default=1e-3)
+    beta1: float = field(default=0.5)
+    beta2: float = field(default=0.999)
+    num_train_epochs: int = field(default=1)
     cache_dir: Optional[str] = field(default=None)
     optim: str = field(default="adamw_torch")
     remove_unused_columns: bool = field(default=False)
@@ -85,6 +105,11 @@ class TrainingArguments(transformers.TrainingArguments):
             "Maximum sequence length. Sequences will be right padded (and possibly truncated)."
         },
     )
+    dispatch_batches: bool = field(default=None)
+    pin_memory: bool = field(default=False)
+    resume: Optional[str] = field(default=None)
+    
+    # train_num_samples: int = field()
     double_quant: bool = field(
         default=True,
         metadata={"help": "Compress the quantization statistics through double quantization."}
@@ -104,6 +129,8 @@ class TrainingArguments(transformers.TrainingArguments):
     lora_weight_path: str = ""
     lora_bias: str = "none"
     group_by_modality_length: bool = field(default=False)
+    token: str = None
+    train_mode: str = "visual_instruction" # ["visual_instruction", "language_pretraining"]
 
 
 def maybe_zero_3(param, ignore_status=False, name=None):
@@ -617,7 +644,6 @@ def preprocess(
             tokenized_lens = _tokenize_fn([header] + [s["value"] for s in source], tokenizer)["input_ids_lens"]
         speakers = [sentence["from"] for sentence in source]
         _mask_targets(target, tokenized_lens, speakers)
-
     return dict(input_ids=input_ids, labels=targets)
 
 
@@ -634,6 +660,8 @@ class LazySupervisedDataset(Dataset):
         self.tokenizer = tokenizer
         self.list_data_dict = list_data_dict
         self.data_args = data_args
+        self.zip_file = zipfile.ZipFile(self.data_args.image_folder, 'r')
+
 
     def __len__(self):
         return len(self.list_data_dict)
@@ -664,7 +692,12 @@ class LazySupervisedDataset(Dataset):
             image_file = self.list_data_dict[i]['image']
             image_folder = self.data_args.image_folder
             processor = self.data_args.image_processor
-            image = Image.open(os.path.join(image_folder, image_file)).convert('RGB')
+            while True:
+                try:
+                    image = Image.open(io.BytesIO(self.zip_file.read(image_file)))
+                    break
+                except:
+                    pass
             if self.data_args.image_aspect_ratio == 'pad':
                 def expand2square(pil_img, background_color):
                     width, height = pil_img.size
@@ -721,8 +754,11 @@ class DataCollatorForSupervisedDataset(object):
         labels = torch.nn.utils.rnn.pad_sequence(labels,
                                                  batch_first=True,
                                                  padding_value=IGNORE_INDEX)
+    
+        
         input_ids = input_ids[:, :self.tokenizer.model_max_length]
         labels = labels[:, :self.tokenizer.model_max_length]
+
         batch = dict(
             input_ids=input_ids,
             labels=labels,
@@ -738,6 +774,90 @@ class DataCollatorForSupervisedDataset(object):
 
         return batch
 
+class WdsProcessor:
+    def __init__(self, tokenizer, data_args):
+        self.data_args = data_args
+        self.tokenizer = tokenizer
+        # processor = self.data_args.image_processor
+    def expand2square(self, pil_img, background_color):
+        width, height = pil_img.size
+        if width == height:
+            return pil_img
+        elif width > height:
+            result = Image.new(pil_img.mode, (width, width), background_color)
+            result.paste(pil_img, (0, (width - height) // 2))
+            return result
+        else:
+            result = Image.new(pil_img.mode, (height, height), background_color)
+            result.paste(pil_img, ((height - width) // 2, 0))
+            return result
+
+    def preprocess_wds(self, data):
+        
+        image, sources = data
+        has_image = 'image' in sources
+        sources = [sources]
+        image_processor = self.data_args.image_processor
+        if has_image:
+            if self.data_args.image_aspect_ratio == 'pad':
+                    
+                image = self.expand2square(image, tuple(int(x*255) for x in image_processor.image_mean))
+                image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+            else:
+                image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+            sources = preprocess_multimodal(
+                copy.deepcopy([e["conversations"] for e in sources]),
+                self.data_args)
+        else:
+            sources = copy.deepcopy([e["conversations"] for e in sources])
+        
+        data_dict = preprocess(
+                sources,
+                self.tokenizer,
+                has_image=has_image)
+
+        data_dict = dict(input_ids=data_dict["input_ids"][0],
+                             labels=data_dict["labels"][0])
+
+
+        if has_image:
+            data_dict['image'] = image
+        elif self.data_args.is_multimodal:
+            # image does not exist in the data, but the model is multimodal
+            crop_size = self.data_args.image_processor.crop_size
+            data_dict['image'] = torch.zeros(3, crop_size['height'], crop_size['width'])
+        
+        return data_dict
+
+def get_wds_dataset(tokenizer, data_args, training_args):
+    visual_instruction = training_args.train_mode == "visual_instruction"
+
+    round_fn = math.ceil
+    
+    if data_args.lengths_path:
+        with open(data_args.lengths_path, 'r') as f:
+            lengths = json.load(f)['length_list']
+            num_samples = len(lengths)
+    elif training_args.num_training_samples:
+        num_samples = training_args.num_training_samples
+    global_batch_size = training_args.per_device_train_batch_size  * training_args.world_size
+    num_batches = round_fn(num_samples / global_batch_size)
+    num_workers = max(1, training_args.dataloader_num_workers)
+    num_worker_batches = round_fn(num_batches / num_workers)  # per dataloader worker
+    num_batches = num_worker_batches * num_workers
+    training_args.max_steps = num_batches
+    data_args.train_num_samples = training_args.num_training_samples
+    
+    data_args.tokenizer = tokenizer
+    data_args.dataloader_num_workers = training_args.dataloader_num_workers
+    data_args.batch_size = training_args.per_device_train_batch_size
+    data_args.world_size = training_args.world_size
+    wds_processor = WdsProcessor(tokenizer, data_args)
+    train_data = get_wds_data(data_args, is_train=True, wds_processor=wds_processor.preprocess_wds) 
+    data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer) if visual_instruction else None 
+    return dict(train_dataset=train_data,
+                eval_dataset=None,
+                data_collator=data_collator)
 
 def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                                 data_args) -> Dict:
@@ -788,8 +908,14 @@ def train():
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
             )
-        elif 'mistral' in model_args.model_name_or_path:
+        elif 'mistral' in model_args.model_name_or_path.lower():
             model = LlavaMistralForCausalLM.from_pretrained(
+                model_args.model_name_or_path,
+                cache_dir=training_args.cache_dir,
+                **bnb_model_from_pretrained_args
+            )
+        elif 'phi' in model_args.model_name_or_path:
+            model = LlavaPhiForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
@@ -798,12 +924,14 @@ def train():
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
+                token=training_args.token,
                 **bnb_model_from_pretrained_args
             )
     else:
         model = transformers.LlamaForCausalLM.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
+            token=training_args.token,
             **bnb_model_from_pretrained_args
         )
     model.config.use_cache = False
@@ -921,8 +1049,24 @@ def train():
                     if training_args.bf16 and module.weight.dtype == torch.float32:
                         module = module.to(torch.bfloat16)
 
-    data_module = make_supervised_data_module(tokenizer=tokenizer,
-                                              data_args=data_args)
+    if data_args.dataset_type == "webdataset":
+    
+        training_args.group_by_length = False     
+        data_module = get_wds_dataset(
+            tokenizer=tokenizer, 
+            data_args=data_args, 
+            training_args=training_args
+                )
+
+        
+    elif data_args.dataset_type == "files":
+        data_module = make_supervised_data_module(
+            tokenizer=tokenizer,
+            data_args=data_args
+            )
+    else:
+        ValueError(f"Unknown dataset type {data_args.dataset_type}! Dataset type should be euther `webdataset` or `files`")
+    
     trainer = LLaVATrainer(model=model,
                     tokenizer=tokenizer,
                     args=training_args,

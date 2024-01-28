@@ -20,30 +20,30 @@ import torch.nn as nn
 from torch.nn import CrossEntropyLoss
 
 from transformers import AutoConfig, AutoModelForCausalLM, \
-                         LlamaConfig, LlamaModel, LlamaForCausalLM
+                         PhiConfig, PhiModel, PhiForCausalLM
 
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
 from ..llava_arch import LlavaMetaModel, LlavaMetaForCausalLM
 
 
-class LlavaConfig(LlamaConfig):
-    model_type = "bakllava"
+class LlavaConfig(PhiConfig):
+    model_type = "phi-llava"
 
 
-class LlavaLlamaModel(LlavaMetaModel, LlamaModel):
+class LlavaPhiModel(LlavaMetaModel, PhiModel):
     config_class = LlavaConfig
 
-    def __init__(self, config: LlamaConfig):
-        super(LlavaLlamaModel, self).__init__(config)
+    def __init__(self, config: PhiConfig):
+        super(LlavaPhiModel, self).__init__(config)
 
 
-class LlavaLlamaForCausalLM(LlamaForCausalLM, LlavaMetaForCausalLM):
+class LlavaPhiForCausalLM(PhiForCausalLM, LlavaMetaForCausalLM):
     config_class = LlavaConfig
 
     def __init__(self, config):
-        super(LlamaForCausalLM, self).__init__(config)
-        self.model = LlavaLlamaModel(config)
+        super(PhiForCausalLM, self).__init__(config)
+        self.model = LlavaPhiModel(config)
 
         self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
@@ -136,5 +136,5 @@ class LlavaLlamaForCausalLM(LlamaForCausalLM, LlavaMetaForCausalLM):
         )
         return model_inputs
 
-AutoConfig.register("bakllava", LlavaConfig)
-AutoModelForCausalLM.register(LlavaConfig, LlavaLlamaForCausalLM)
+AutoConfig.register("phi-llava", LlavaConfig)
+AutoModelForCausalLM.register(LlavaConfig, LlavaPhiForCausalLM)

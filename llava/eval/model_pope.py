@@ -13,7 +13,7 @@ from llava.mm_utils import tokenizer_image_token, get_model_name_from_path, Keyw
 
 from PIL import Image
 import math
-
+import re
 
 def split_list(lst, n):
     """Split a list into n (roughly) equal-sized chunks"""
@@ -25,23 +25,29 @@ def get_chunk(lst, n, k):
     chunks = split_list(lst, n)
     return chunks[k]
 
+def read_jsonl(path):
+    data = []
+    with open(path) as f:
+        for line in f:
+            data.append(json.loads(line))
+    return data
+
 
 def eval_model(args):
     # Model
     disable_torch_init()
+    answers_file = os.path.expanduser(args.answers_file)
     model_path = os.path.expanduser(args.model_path)
     model_name = get_model_name_from_path(model_path)
     tokenizer, model, image_processor, context_len = load_pretrained_model(model_path, args.model_base, model_name)
-
-    questions = json.load(open(os.path.expanduser(args.question_file), "r"))
+    questions = read_jsonl(args.question_file)
     questions = get_chunk(questions, args.num_chunks, args.chunk_idx)
-    answers_file = os.path.expanduser(args.answers_file)
-    os.makedirs(os.path.dirname(answers_file), exist_ok=True)
+    # os.makedirs(os.path.dirname(answers_file), exist_ok=True)
     ans_file = open(answers_file, "w")
     for i, line in enumerate(tqdm(questions)):
-        idx = line["id"]
-        question = line['conversations'][0]
-        qs = question['value'].replace('<image>', '').strip()
+        idx = line["question_id"]
+        qs = line['text']
+        # qs = question['value'].replace('<image>', '').strip()
         cur_prompt = qs
 
         if 'image' in line:
@@ -57,10 +63,6 @@ def eval_model(args):
         else:
             images = None
 
-        if args.single_pred_prompt:
-            qs = qs + '\n' + "Answer with the option's letter from the given choices directly."
-            cur_prompt = cur_prompt + '\n' + "Answer with the option's letter from the given choices directly."
-
         conv = conv_templates[args.conv_mode].copy()
         conv.append_message(conv.roles[0], qs)
         conv.append_message(conv.roles[1], None)
@@ -68,22 +70,20 @@ def eval_model(args):
 
         input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
 
-        stop_str = conv.sep2
-        stop_str = "\n" if "phi" in model_name else stop_str
+        stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
         keywords = [stop_str]
-        stopping_criteria = [KeywordsStoppingCriteria(keywords, tokenizer, input_ids)]
-        eos_token_id = tokenizer.eos_token_id
+        stopping_criteria = [KeywordsStoppingCriteria(keywords, tokenizer, input_ids)] if conv.version == "v0" else None
 
         with torch.inference_mode():
             output_ids = model.generate(
                 input_ids,
                 images=images,
-                do_sample=True if args.temperature > 0 else False,
-                temperature=args.temperature,
-                max_new_tokens=1024,
+                do_sample=True,
+                temperature=0.2,
+                max_new_tokens=256,
                 use_cache=True,
-                stopping_criteria=stopping_criteria,
-                # eos_token_id=eos_token_id
+                do_sample=True
+                # stopping_criteria=stopping_criteria,
             )
 
         input_token_len = input_ids.shape[1]
@@ -95,23 +95,24 @@ def eval_model(args):
         if outputs.endswith(stop_str):
             outputs = outputs[:-len(stop_str)]
         outputs = outputs.strip()
-        # outputs = outputs.replace("\n<</SYS>>", "")
-        # print("question:\n", cur_prompt)
-        # print("answer:\n", outputs)
+
         # prompt for answer
         if args.answer_prompter:
             outputs_reasoning = outputs
             input_ids = tokenizer_image_token(prompt + outputs_reasoning + ' ###\nANSWER:', tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
-
+            # input_ids = tokenizer_image_token(prompt + outputs_reasoning + f' Therefore, among A through {choices[-1]}, the answer is', tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
+            
             with torch.inference_mode():
                 output_ids = model.generate(
                     input_ids,
                     images=images,
-                    do_sample=True if args.temperature > 0 else False,
-                    temperature=args.temperature,
+                    do_sample=True,
+                    temperature=0.2,
                     max_new_tokens=64,
                     use_cache=True,
-                    stopping_criteria=stopping_criteria)
+                    do_sample=True
+                    # stopping_criteria=[stopping_criteria]
+                    )
 
             input_token_len = input_ids.shape[1]
             n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
@@ -129,6 +130,7 @@ def eval_model(args):
                                    "prompt": cur_prompt,
                                    "text": outputs,
                                    "answer_id": ans_id,
+                                   "answer": line["label"],
                                    "model_id": model_name,
                                    "metadata": {}}) + "\n")
         ans_file.flush()
@@ -144,9 +146,7 @@ if __name__ == "__main__":
     parser.add_argument("--conv-mode", type=str, default="llava_v0")
     parser.add_argument("--num-chunks", type=int, default=1)
     parser.add_argument("--chunk-idx", type=int, default=0)
-    parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--answer-prompter", action="store_true")
-    parser.add_argument("--single-pred-prompt", action="store_true")
     args = parser.parse_args()
 
     eval_model(args)
