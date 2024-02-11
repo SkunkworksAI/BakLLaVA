@@ -17,6 +17,8 @@ import os
 import warnings
 import shutil
 
+from hf_olmo import *
+
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BitsAndBytesConfig
 import torch
 from llava.model import *
@@ -39,7 +41,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
     else:
         kwargs['torch_dtype'] = torch.float16
 
-    if 'llava' in model_name.lower():
+    if ('llava' in model_name.lower() or 'phi' in model_name.lower()) and model_base != "phi":
         # Load LLaVA model
         if 'lora' in model_name.lower() and model_base is None:
             warnings.warn('There is `lora` in model name but no `model_base` is provided. If you are loading a LoRA model, please provide the `model_base` argument. Detailed instruction: https://github.com/haotian-liu/LLaVA#launch-a-model-worker-lora-weights-unmerged.')
@@ -101,15 +103,12 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             elif 'mpt' in model_name.lower():
                 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
                 model = LlavaMPTForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
-            elif 'phi' in model_name.lower():
-                tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
-                model = LlavaPhiForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
             else:
                 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
                 model = LlavaMistralForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
     else:
         # Load language model
-        if model_base is not None:
+        if model_base is not None and model_base != "phi":
             # PEFT model
             from peft import PeftModel
             tokenizer = AutoTokenizer.from_pretrained(model_base, use_fast=False)
@@ -122,16 +121,23 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             model.to(torch.float16)
         else:
             use_fast = False
-            if 'mpt' in model_name.lower():
+            if 'mpt' in model_name.lower() and model_base != "phi":
                 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
                 model = AutoModelForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, trust_remote_code=True, **kwargs)
             else:
-                tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
-                model = AutoModelForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+                if 'olmo' in model_path:
+                    
+                    tokenizer = OLMoTokenizerFast.from_pretrained("/p/scratch/ccstdl/marianna/bakllava/checkpoints/OLMo-1B", use_fast=True, trust_remote_code=True)
+                else:
+                    tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, trust_remote_code=True)
+                model = AutoModelForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, trust_remote_code=True, **kwargs)
+                model_name = ""
 
     image_processor = None
 
-    if 'llava' in model_name.lower():
+    
+
+    if 'llava' in model_name.lower()  or 'phi' in model_name.lower():
         mm_use_im_start_end = getattr(model.config, "mm_use_im_start_end", False)
         mm_use_im_patch_token = getattr(model.config, "mm_use_im_patch_token", True)
         if mm_use_im_patch_token:
@@ -141,10 +147,21 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
         model.resize_token_embeddings(len(tokenizer))
 
         vision_tower = model.get_vision_tower()
-        if not vision_tower.is_loaded:
-            vision_tower.load_model()
-        vision_tower.to(device='cuda', dtype=torch.float16)
-        image_processor = vision_tower.image_processor
+        if vision_tower:
+            if not vision_tower.is_loaded:
+                vision_tower.load_model()
+            vision_tower.to(device='cuda', dtype=torch.float16)
+            image_processor = vision_tower.image_processor
+        # else:
+        #     from transformers import CLIPVisionModel, CLIPImageProcessor
+
+        #     vision_tower_name = 'openai/clip-vit-base-patch32'
+        #     vision_tower = CLIPVisionModel.from_pretrained(vision_tower_name)
+        #     image_processor = CLIPImageProcessor.from_pretrained(vision_tower_name)
+        #     vision_tower.requires_grad_(False)
+        #     vision_tower.to(device='cuda', dtype=torch.float16)
+        #     # image_processor = vision_tower.image_processor
+
 
     if hasattr(model.config, "max_sequence_length"):
         context_len = model.config.max_sequence_length

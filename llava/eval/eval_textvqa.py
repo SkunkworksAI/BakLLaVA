@@ -43,7 +43,7 @@ def eval_single(annotation_file, result_file):
     for result in results:
         annotation = annotations[(result['question_id'], prompt_processor(result['prompt']))]
         pred_list.append({
-            "pred_answer": result['text'],
+            "pred_answer": result['text'].replace("</s>", "").strip(),
             "gt_answers": annotation['answers'],
         })
 

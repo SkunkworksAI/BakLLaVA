@@ -69,7 +69,7 @@ def eval_model(args):
         input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
 
         stop_str = conv.sep2
-        stop_str = "\n" if "phi" in model_name else stop_str
+        stop_str = "\n" if ("phi" in model_name or "olmo" in model_name) else stop_str
         keywords = [stop_str]
         stopping_criteria = [KeywordsStoppingCriteria(keywords, tokenizer, input_ids)]
         eos_token_id = tokenizer.eos_token_id
@@ -77,7 +77,7 @@ def eval_model(args):
         with torch.inference_mode():
             output_ids = model.generate(
                 input_ids,
-                images=images,
+                # images=images,
                 do_sample=True if args.temperature > 0 else False,
                 temperature=args.temperature,
                 max_new_tokens=1024,
@@ -92,10 +92,10 @@ def eval_model(args):
             print(f'[Warning] {n_diff_input_output} output_ids are not the same as the input_ids')
         outputs = tokenizer.batch_decode(output_ids[:, input_token_len:], skip_special_tokens=True)[0]
         outputs = outputs.strip()
-        if outputs.endswith(stop_str):
-            outputs = outputs[:-len(stop_str)]
+        # if outputs.endswith(stop_str):
+        #     outputs = outputs[:-len(stop_str)]
         outputs = outputs.strip()
-        # outputs = outputs.replace("\n<</SYS>>", "")
+        outputs = outputs.replace("### unknown: ", "")
         # print("question:\n", cur_prompt)
         # print("answer:\n", outputs)
         # prompt for answer

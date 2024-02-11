@@ -10,6 +10,8 @@ class SeparatorStyle(Enum):
     MPT = auto()
     PLAIN = auto()
     LLAMA_2 = auto()
+    PHI = auto()
+    OLMO = auto()
 
 
 @dataclasses.dataclass
@@ -80,6 +82,49 @@ class Conversation:
                     if type(message) is tuple:
                         message, _, _ = message
                     if i == 0: message = wrap_sys(self.system) + message
+                    if i % 2 == 0:
+                        message = wrap_inst(message)
+                        ret += self.sep + message
+                    else:
+                        ret += " " + message + " " + self.sep2
+                else:
+                    ret += ""
+            ret = ret.lstrip(self.sep)
+
+        elif self.sep_style == SeparatorStyle.PHI:
+            wrap_sys = lambda msg: f"<<SYS>>\n{msg}\n<</SYS>>\n\n"
+            wrap_inst = lambda msg: f"Instruct: {msg} \nOutput:"
+            ret = ""
+
+            for i, (role, message) in enumerate(messages):
+                if i == 0:
+                    assert message, "first message should not be none"
+                    assert role == self.roles[0], "first message should come from user"
+                if message:
+                    if type(message) is tuple:
+                        message, _, _ = message
+                    if i == 0: message = wrap_sys(self.system) + message
+                    if i % 2 == 0:
+                        message = wrap_inst(message)
+                        ret += self.sep + message
+                    else:
+                        ret += " " + message + " " + self.sep2
+                else:
+                    ret += ""
+            ret = ret.lstrip(self.sep)
+        elif self.sep_style == SeparatorStyle.OLMO:
+            wrap_sys = lambda msg: f"<<SYS>>\n{msg}\n<</SYS>>\n\n"
+            wrap_inst = lambda msg: f"Write a response that appropriately completes the request.\n\n### Instruction:\n {msg} \n### Response:"
+            ret = ""
+
+            for i, (role, message) in enumerate(messages):
+                if i == 0:
+                    assert message, "first message should not be none"
+                    assert role == self.roles[0], "first message should come from user"
+                if message:
+                    if type(message) is tuple:
+                        message, _, _ = message
+                    # if i == 0: message = wrap_sys(self.system) + message
                     if i % 2 == 0:
                         message = wrap_inst(message)
                         ret += self.sep + message
@@ -261,6 +306,41 @@ conv_vicuna_v1 = Conversation(
     sep2="</s>",
 )
 
+phi = Conversation(
+    system="A chat between a curious user and an artificial intelligence assistant. "
+    "The assistant gives helpful, detailed, and polite answers to the user's questions.",
+    roles=("USER", "ASSISTANT"),
+    version="v0",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.PHI,
+    sep="<|endoftext|>",
+    sep2="<|endoftext|>",
+)
+
+olmo = Conversation(
+    system="",
+    roles=("user", "assistant"),
+    version="v0",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.OLMO,
+    sep="<|endoftext|>",
+    sep2="<|endoftext|>",
+)
+
+conv_phi = Conversation(
+    system="A chat between a curious user and an artificial intelligence assistant. "
+    "The assistant gives helpful, detailed, and polite answers to the user's questions.",
+    roles=("USER", "ASSISTANT"),
+    version="v2",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.TWO,
+    sep="<|endoftext|>",
+    sep2="<|endoftext|>",
+)
+
 conv_llama_2 = Conversation(
     system="""You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
 
@@ -285,6 +365,19 @@ conv_llava_llama_2 = Conversation(
     sep_style=SeparatorStyle.LLAMA_2,
     sep="<s>",
     sep2="</s>",
+)
+
+llava_phi = Conversation(
+    system="You are a helpful language and vision assistant. "
+           "You are able to understand the visual content that the user provides, "
+           "and assist the user with a variety of tasks using natural language.",
+    roles=("USER", "ASSISTANT"),
+    version="llava_phi",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.TWO,
+    sep="<|endoftext|>",
+    sep2="<|endoftext|>",
 )
 
 conv_mpt = Conversation(
@@ -344,6 +437,18 @@ conv_llava_v1 = Conversation(
     sep2="</s>",
 )
 
+conv_mistral_v1 = Conversation(
+    system="""You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+    If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.""",
+    roles=("user", "assistant"),
+    version="v1",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.LLAMA_2,
+    sep="<s>",
+    sep2="</s>",
+)
+
 conv_llava_v1_mmtag = Conversation(
     system="A chat between a curious user and an artificial intelligence assistant. "
            "The assistant is able to understand the visual content that the user provides, and assist the user with a variety of tasks using natural language."
@@ -364,7 +469,8 @@ conv_templates = {
     "v1": conv_vicuna_v1,
     "vicuna_v1": conv_vicuna_v1,
     "llama_2": conv_llama_2,
-
+    "mistral": conv_llama_2,
+    "olmo": olmo,
     "plain": conv_llava_plain,
     "v0_plain": conv_llava_plain,
     "llava_v0": conv_llava_v0,
@@ -372,7 +478,10 @@ conv_templates = {
     "llava_v1": conv_llava_v1,
     "v1_mmtag": conv_llava_v1_mmtag,
     "llava_llama_2": conv_llava_llama_2,
-
+    "conv_mistral_v1": conv_mistral_v1,
+    "llava_phi": llava_phi,
+    "conv_phi": conv_phi,
+    "phi": phi,
     "mpt": conv_mpt,
 }
 

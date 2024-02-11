@@ -7,6 +7,9 @@
 
 # replace_llama_attn_with_flash_attn()
 
+import torch
+from hf_olmo import *
+
 from llava.train.train import train
 
 if __name__ == "__main__":

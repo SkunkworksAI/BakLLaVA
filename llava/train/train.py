@@ -13,7 +13,7 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-
+from hf_olmo import *
 import os
 import copy
 from dataclasses import dataclass, field
@@ -43,6 +43,8 @@ from deepspeed.accelerator import get_accelerator
 import zipfile
 from webdataset_utils import get_wds_data
 import math
+
+import torch
 
 local_rank = None
 
@@ -80,6 +82,7 @@ class DataArguments:
     image_aspect_ratio: str = 'square'
     image_grid_pinpoints: Optional[str] = field(default=None)
     train_data_weights: Optional[List[str]] = None
+    image_grids: Optional[bool] = false
     # dataloader_num_workers: Optional[int] = None
     # seed: int = 0
 
@@ -781,30 +784,60 @@ class WdsProcessor:
         # processor = self.data_args.image_processor
     def expand2square(self, pil_img, background_color):
         width, height = pil_img.size
+        mode = pil_img.mode
         if width == height:
             return pil_img
         elif width > height:
-            result = Image.new(pil_img.mode, (width, width), background_color)
+            if mode == "L": # grayscale img
+                result = Image.new(pil_img.mode, (width, width), background_color[0])
+            else:  
+                result = Image.new(pil_img.mode, (width, width), background_color)
             result.paste(pil_img, (0, (width - height) // 2))
             return result
         else:
-            result = Image.new(pil_img.mode, (height, height), background_color)
+            if mode == "L": # grayscale img
+                result = Image.new(pil_img.mode, (height, height), background_color[0])
+            else:  
+                result = Image.new(pil_img.mode, (height, height), background_color)
             result.paste(pil_img, ((height - width) // 2, 0))
             return result
+
+    def split_image(self, pil_img):
+        width, height = pil_img.size
+
+        grid_size = width // 2
+        for i in range(0, width, grid_size):
+            for j in range(0, height, grid_size):
+                yield pil_img.crop((i, j, i+grid_size, j+grid_size))
 
     def preprocess_wds(self, data):
         
         image, sources = data
         has_image = 'image' in sources
+        # has_image = False
+        # self.data_args.is_multimodal = False
         sources = [sources]
         image_processor = self.data_args.image_processor
         if has_image:
             if self.data_args.image_aspect_ratio == 'pad':
                     
                 image = self.expand2square(image, tuple(int(x*255) for x in image_processor.image_mean))
+
+            if self.data_args.image_grids:
+
+                grids = self.split_image(image)
+
+                grids_processed = [image_processor.preprocess(grid, return_tensors='pt')['pixel_values'][0] for grid in grids]
+    
                 image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+
+                grids_processed.append(image)
+
+                image = torch.cat(grids_processed)
             else:
+
                 image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+
             sources = preprocess_multimodal(
                 copy.deepcopy([e["conversations"] for e in sources]),
                 self.data_args)
@@ -928,10 +961,11 @@ def train():
                 **bnb_model_from_pretrained_args
             )
     else:
-        model = transformers.LlamaForCausalLM.from_pretrained(
+        model = transformers.AutoModelForCausalLM.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
             token=training_args.token,
+            trust_remote_code=True,
             **bnb_model_from_pretrained_args
         )
     model.config.use_cache = False
@@ -970,6 +1004,8 @@ def train():
         rank0_print("Adding LoRA adapters...")
         model = get_peft_model(model, lora_config)
 
+    print(model)
+
     if 'mpt' in model_args.model_name_or_path:
         tokenizer = transformers.AutoTokenizer.from_pretrained(
             model_args.model_name_or_path,
@@ -977,6 +1013,15 @@ def train():
             model_max_length=training_args.model_max_length,
             padding_side="right"
         )
+    elif 'OLMo' in model_args.model_name_or_path:
+        tokenizer = OLMoTokenizerFast.from_pretrained(
+            model_args.model_name_or_path,
+            cache_dir=training_args.cache_dir,
+            model_max_length=training_args.model_max_length,
+            padding_side="right",
+        )
+        # tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+        # tokenizer.pad_token = tokenizer.unk_token
     else:
         tokenizer = transformers.AutoTokenizer.from_pretrained(
             model_args.model_name_or_path,
@@ -986,7 +1031,7 @@ def train():
             use_fast=False,
         )
 
-    if model_args.version == "v0":
+    if model_args.version == "v0" or 'OLMo' in model_args.model_name_or_path:
         if tokenizer.pad_token is None:
             smart_tokenizer_and_embedding_resize(
                 special_tokens_dict=dict(pad_token="[PAD]"),
@@ -1001,7 +1046,7 @@ def train():
             conversation_lib.default_conversation = conversation_lib.conv_templates[model_args.version]
         else:
             conversation_lib.default_conversation = conversation_lib.conv_templates["vicuna_v1"]
-
+    data_args.image_processor = None
     if model_args.vision_tower is not None:
         model.get_model().initialize_vision_modules(
             model_args=model_args,

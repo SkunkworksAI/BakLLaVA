@@ -45,7 +45,10 @@ if __name__ == "__main__":
     problems = json.load(open(args.problems_path))
     predictions = [json.loads(line) for line in open(args.result_file)]
     predictions = {pred['question_id']: pred for pred in predictions}
-    split_problems = {idx: problems[idx] for idx in split_indices}
+    try:
+        split_problems = {idx: problems[idx] for idx in split_indices}
+    except:
+        split_problems = {p["id"]: p for p in  problems}
 
     results = {'correct': [], 'incorrect': []}
     sqa_results = {}
@@ -104,7 +107,13 @@ if __name__ == "__main__":
     multimodal_total = multimodal_correct + multimodal_incorrect
     ###### IMG ######
 
-    print(f'Total: {total}, Correct: {correct}, Accuracy: {correct / total * 100:.2f}%, IMG-Accuracy: {multimodal_correct / multimodal_total * 100:.2f}%')
+    if multimodal_total > 0:
+
+        multimodal_perc = multimodal_correct / multimodal_total
+    else:
+        multimodal_perc = 0
+
+    print(f'Total: {total}, Correct: {correct}, Accuracy: {correct / total * 100:.2f}%, IMG-Accuracy: {multimodal_perc * 100:.2f}%')
 
     sqa_results['acc'] = correct / total * 100
     sqa_results['correct'] = correct

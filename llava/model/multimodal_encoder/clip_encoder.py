@@ -1,9 +1,10 @@
 import torch
 import torch.nn as nn
 
-from transformers import CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig
+from transformers import CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig, AutoImageProcessor, SiglipVisionModel, AutoModel
 from huggingface_hub import hf_hub_download
 import json
+import timm
 
 def get_open_clip_image_processor(model_name):
     config_path = hf_hub_download(model_name, filename="open_clip_config.json")
@@ -27,6 +28,13 @@ def get_open_clip_image_processor(model_name):
             size=size
             )
 
+class TimmProcessor:
+    def __init__(self, data_config, is_training):
+        self.transforms = timm.data.create_transform(**data_config, is_training=False)
+
+    def preprocess(self, img):
+        return self.transforms(img)
+
 
 class CLIPVisionTower(nn.Module):
     def __init__(self, vision_tower, args, delay_load=False):
@@ -43,10 +51,23 @@ class CLIPVisionTower(nn.Module):
             self.cfg_only = CLIPVisionConfig.from_pretrained(self.vision_tower_name)
 
     def load_model(self):
-        self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
+        
         if self.vision_tower_name.startswith("apple") or self.vision_tower_name.startswith("laion"):
+            self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
             self.image_processor = get_open_clip_image_processor(self.vision_tower_name)
+        elif "siglip" in self.vision_tower_name:
+            self.vision_tower = SiglipVisionModel.from_pretrained(self.vision_tower_name)
+            self.image_processor  = AutoImageProcessor.from_pretrained(self.vision_tower_name)
+        elif "vit" in self.vision_tower_name and not "clip" in self.vision_tower_name: # timm model
+            model = timm.create_model(self.vision_tower_name, pretrained=True, num_classes=0)
+            self.vision_tower = model.eval()
+            data_config = timm.data.resolve_model_data_config(self.vision_tower)
+            self.image_processor  = TimmProcessor(data_config)
+        elif "dino" in self.vision_tower_name:
+            self.image_processor = AutoImageProcessor.from_pretrained(self.vision_tower_name)
+            self.vision_tower = AutoModel.from_pretrained(self.vision_tower_name)
         else:
+            self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
             self.image_processor = CLIPImageProcessor.from_pretrained(self.vision_tower_name)
 
         self.vision_tower.requires_grad_(False)

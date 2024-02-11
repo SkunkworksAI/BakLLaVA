@@ -56,7 +56,11 @@ class LlavaMetaModel:
 
         self.config.use_mm_proj = True
         self.config.mm_projector_type = getattr(model_args, 'mm_projector_type', 'linear')
-        self.config.mm_hidden_size = vision_tower.hidden_size
+
+        if "siglip" not in model_args.vision_tower:
+            self.config.mm_hidden_size = vision_tower.hidden_size
+        else:
+            self.config.mm_hidden_size = vision_tower.config.hidden_size
         self.config.mm_vision_select_layer = mm_vision_select_layer
         self.config.mm_vision_select_feature = mm_vision_select_feature
 

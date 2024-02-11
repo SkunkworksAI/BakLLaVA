@@ -19,6 +19,8 @@ from webdataset.filters import _shuffle
 from webdataset.tariterators import base_plus_ext, url_opener, tar_file_expander, valid_sample
 # from data_utils import get_normalized_weights_and_num_samples
 from typing import List, Tuple
+import io
+from PIL import Image
 
 
 def get_normalized_weights_and_num_samples(
@@ -282,7 +284,7 @@ def image_text_dict_collation_fn(samples):
     return result
 
 def decode_image(png_bytes):
-    return Image.open(BytesIO(png_bytes))
+    return Image.open(io.BytesIO(png_bytes))
 
 
 def process_sample(sample):
@@ -292,7 +294,7 @@ def process_sample(sample):
     else:
         sample["png"] = decode_image(sample["png"])
     
-    sample = {"png": sample["png"], "json": sample["json"]}
+    sample = {"png": sample["png"], "json": json.load(io.BytesIO(sample["json"]))}
     return sample
 
 def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
@@ -394,7 +396,7 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
     # pipeline.extend([
     #     wds.map(process_sample),
     #     wds.rename(image="jpg;png;jpeg;webp", text="json"),
-    #     wds.to_tuple("image", "text")
+    #     wds.to_tuple("image", "text"),
     #     wds.map(wds_processor)
     #     ])
 
