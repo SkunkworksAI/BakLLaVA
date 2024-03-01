@@ -45,6 +45,7 @@ from webdataset_utils import get_wds_data
 import math
 
 import torch
+import numpy as np
 
 local_rank = None
 
@@ -82,7 +83,8 @@ class DataArguments:
     image_aspect_ratio: str = 'square'
     image_grid_pinpoints: Optional[str] = field(default=None)
     train_data_weights: Optional[List[str]] = None
-    image_grids: Optional[bool] = false
+    image_grids: Optional[bool] = False
+    language_only:  Optional[bool] = False
     # dataloader_num_workers: Optional[int] = None
     # seed: int = 0
 
@@ -833,9 +835,10 @@ class WdsProcessor:
 
                 grids_processed.append(image)
 
-                image = torch.cat(grids_processed)
+                image = grids_processed
+            elif self.data_args.language_only:
+                has_image = False
             else:
-
                 image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
 
             sources = preprocess_multimodal(
@@ -953,6 +956,23 @@ def train():
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
             )
+        elif 'Qwen' in model_args.model_name_or_path:
+            model = LlavaQwen2ForCausalLM.from_pretrained(
+                model_args.model_name_or_path,
+                cache_dir=training_args.cache_dir,
+                **bnb_model_from_pretrained_args
+            )
+        elif 'OLMo' in model_args.model_name_or_path:
+            # model = LlavaOlmoForCausalLM.from_pretrained(
+            #     model_args.model_name_or_path,
+            #     cache_dir=training_args.cache_dir,
+            #     **bnb_model_from_pretrained_args
+            # )
+            model = AutoModelForCausalLM.from_pretrained(
+                model_args.model_name_or_path,
+                cache_dir=training_args.cache_dir,
+                **bnb_model_from_pretrained_args
+            )
         else:
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -1004,7 +1024,6 @@ def train():
         rank0_print("Adding LoRA adapters...")
         model = get_peft_model(model, lora_config)
 
-    print(model)
 
     if 'mpt' in model_args.model_name_or_path:
         tokenizer = transformers.AutoTokenizer.from_pretrained(
@@ -1031,7 +1050,7 @@ def train():
             use_fast=False,
         )
 
-    if model_args.version == "v0" or 'OLMo' in model_args.model_name_or_path:
+    if model_args.version == "v0" or 'OLMo' in model_args.model_name_or_path or 'Qwen' in model_args.model_name_or_path:
         if tokenizer.pad_token is None:
             smart_tokenizer_and_embedding_resize(
                 special_tokens_dict=dict(pad_token="[PAD]"),
@@ -1081,6 +1100,8 @@ def train():
         model.config.mm_use_im_patch_token = model_args.mm_use_im_patch_token
         model.initialize_vision_tokenizer(model_args, tokenizer=tokenizer)
 
+    print(model)
+
     if training_args.bits in [4, 8]:
         from peft.tuners.lora import LoraLayer
         for name, module in model.named_modules():
@@ -1117,10 +1138,10 @@ def train():
                     args=training_args,
                     **data_module)
 
-    if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
-        trainer.train(resume_from_checkpoint=True)
-    else:
-        trainer.train()
+    # if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
+    #     trainer.train(resume_from_checkpoint=True)
+    # else:
+    trainer.train()
     trainer.save_state()
 
     model.config.use_cache = True

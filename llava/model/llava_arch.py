@@ -104,7 +104,7 @@ class LlavaMetaForCausalLM(ABC):
             image_features = torch.split(image_features, split_sizes, dim=0)
             image_features = [x.flatten(0, 1) for x in image_features]
         else:
-            image_features = self.encode_images(images)
+            image_features = self.encode_images(images)\
 
         new_input_embeds = []
         new_labels = [] if labels is not None else None
@@ -168,7 +168,6 @@ class LlavaMetaForCausalLM(ABC):
             if labels is not None:
                 cur_new_labels = torch.cat(cur_new_labels, dim=0)
                 new_labels.append(cur_new_labels)
-
         if any(x.shape != new_input_embeds[0].shape for x in new_input_embeds):
             max_len = max(x.shape[0] for x in new_input_embeds)
 

@@ -100,12 +100,18 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             if 'phi' in model_name.lower():
                 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
                 model = LlavaPhiForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
-            elif 'mpt' in model_name.lower():
-                tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
-                model = LlavaMPTForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
-            else:
+            # elif 'mpt' in model_name.lower():
+            #     tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
+            #     model = LlavaMPTForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+            elif 'mistral' in model_name.lower():
                 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
                 model = LlavaMistralForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+            elif 'qwen' in model_name.lower():
+                tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
+                model = LlavaQwen2ForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+            else:
+                tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
+                model = LlavaLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
     else:
         # Load language model
         if model_base is not None and model_base != "phi":
@@ -125,11 +131,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
                 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
                 model = AutoModelForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, trust_remote_code=True, **kwargs)
             else:
-                if 'olmo' in model_path:
-                    
-                    tokenizer = OLMoTokenizerFast.from_pretrained("/p/scratch/ccstdl/marianna/bakllava/checkpoints/OLMo-1B", use_fast=True, trust_remote_code=True)
-                else:
-                    tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, trust_remote_code=True)
+                tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, trust_remote_code=True)
                 model = AutoModelForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, trust_remote_code=True, **kwargs)
                 model_name = ""
 
@@ -152,16 +154,16 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
                 vision_tower.load_model()
             vision_tower.to(device='cuda', dtype=torch.float16)
             image_processor = vision_tower.image_processor
-        # else:
-        #     from transformers import CLIPVisionModel, CLIPImageProcessor
+        else:
+            from transformers import CLIPVisionModel, CLIPImageProcessor
 
-        #     vision_tower_name = 'openai/clip-vit-base-patch32'
-        #     vision_tower = CLIPVisionModel.from_pretrained(vision_tower_name)
-        #     image_processor = CLIPImageProcessor.from_pretrained(vision_tower_name)
-        #     vision_tower.requires_grad_(False)
-        #     vision_tower.to(device='cuda', dtype=torch.float16)
-        #     # image_processor = vision_tower.image_processor
-
+            vision_tower_name = 'openai/clip-vit-base-patch32'
+            vision_tower = CLIPVisionModel.from_pretrained(vision_tower_name)
+            image_processor = CLIPImageProcessor.from_pretrained(vision_tower_name)
+            vision_tower.requires_grad_(False)
+            vision_tower.to(device='cuda', dtype=torch.float16)
+            # image_processor = vision_tower.image_processor
+    print(tokenizer)
 
     if hasattr(model.config, "max_sequence_length"):
         context_len = model.config.max_sequence_length

@@ -12,5 +12,8 @@ from hf_olmo import *
 
 from llava.train.train import train
 
+import faulthandler
+# faulthandler.dump_traceback_later(20, repeat=True)
+
 if __name__ == "__main__":
     train()

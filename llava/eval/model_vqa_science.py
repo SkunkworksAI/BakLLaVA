@@ -25,6 +25,13 @@ def get_chunk(lst, n, k):
     chunks = split_list(lst, n)
     return chunks[k]
 
+def split_image(pil_img):
+    width, height = pil_img.size
+
+    grid_size = width // 2
+    for i in range(0, width, grid_size):
+        for j in range(0, height, grid_size):
+            yield pil_img.crop((i, j, i+grid_size, j+grid_size))
 
 def eval_model(args):
     # Model
@@ -48,6 +55,16 @@ def eval_model(args):
             image_file = line["image"]
             image = Image.open(os.path.join(args.image_folder, image_file))
             image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+            # grids = split_image(image)
+
+            # grids_processed = [image_processor.preprocess(grid, return_tensors='pt')['pixel_values'][0] for grid in grids]
+
+            # # image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0].half().cuda()
+
+            # grids_processed.append(image_tensor)
+
+            # images = torch.stack(grids_processed).half().cuda()
+            # image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
             images = image_tensor.unsqueeze(0).half().cuda()
             if getattr(model.config, 'mm_use_im_start_end', False):
                 qs = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + qs
@@ -71,18 +88,18 @@ def eval_model(args):
         stop_str = conv.sep2
         stop_str = "\n" if ("phi" in model_name or "olmo" in model_name) else stop_str
         keywords = [stop_str]
-        stopping_criteria = [KeywordsStoppingCriteria(keywords, tokenizer, input_ids)]
+        # stopping_criteria = [KeywordsStoppingCriteria(keywords, tokenizer, input_ids)]
         eos_token_id = tokenizer.eos_token_id
 
         with torch.inference_mode():
             output_ids = model.generate(
                 input_ids,
-                # images=images,
+                images=images,
                 do_sample=True if args.temperature > 0 else False,
                 temperature=args.temperature,
                 max_new_tokens=1024,
                 use_cache=True,
-                stopping_criteria=stopping_criteria,
+                # stopping_criteria=stopping_criteria,
                 # eos_token_id=eos_token_id
             )
 
@@ -109,9 +126,10 @@ def eval_model(args):
                     images=images,
                     do_sample=True if args.temperature > 0 else False,
                     temperature=args.temperature,
-                    max_new_tokens=64,
+                    max_new_tokens=1024,
                     use_cache=True,
-                    stopping_criteria=stopping_criteria)
+                    # stopping_criteria=stopping_criteria
+                    )
 
             input_token_len = input_ids.shape[1]
             n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
@@ -119,8 +137,8 @@ def eval_model(args):
                 print(f'[Warning] {n_diff_input_output} output_ids are not the same as the input_ids')
             outputs = tokenizer.batch_decode(output_ids[:, input_token_len:], skip_special_tokens=True)[0]
             outputs = outputs.strip()
-            if outputs.endswith(stop_str):
-                outputs = outputs[:-len(stop_str)]
+            # if outputs.endswith(stop_str):
+            #     outputs = outputs[:-len(stop_str)]
             outputs = outputs.strip()
             outputs = outputs_reasoning + '\n The answer is ' + outputs
 

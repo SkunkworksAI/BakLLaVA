@@ -348,12 +348,12 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
     if is_train:
         if not resampled:
             pipeline.extend([
-                detshuffle2(
-                    bufsize=_SHARD_SHUFFLE_SIZE,
-                    initial=_SHARD_SHUFFLE_INITIAL,
-                    # seed=args.seed,
-                    epoch=shared_epoch,
-                ),
+                # detshuffle2(
+                #     bufsize=_SHARD_SHUFFLE_SIZE,
+                #     initial=_SHARD_SHUFFLE_INITIAL,
+                #     # seed=args.seed,
+                #     epoch=shared_epoch,
+                # ),
                 wds.split_by_node,
                 wds.split_by_worker,
             ])
@@ -361,10 +361,10 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None):
             # at this point, we have an iterator over the shards assigned to each worker at each node
             # tarfile_to_samples_nothrow,  # wds.tarfile_to_samples(handler=log_and_continue),
             wds.tarfile_to_samples(handler=log_and_continue),
-            wds.shuffle(
-                bufsize=_SAMPLE_SHUFFLE_SIZE,
-                initial=_SAMPLE_SHUFFLE_INITIAL,
-            ),
+            # wds.shuffle(
+            #     bufsize=_SAMPLE_SHUFFLE_SIZE,
+            #     initial=_SAMPLE_SHUFFLE_INITIAL,
+            # ),
         ])
     else:
         pipeline.extend([
