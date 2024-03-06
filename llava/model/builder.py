@@ -138,11 +138,26 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
         if not vision_tower.is_loaded:
             vision_tower.load_model()
         vision_tower.to(device='cuda', dtype=torch.float16)
-        image_processor = vision_tower.image_processor
+        processor = vision_tower.image_processor
+
+    elif 'llava-audio' in model_name.lower():
+        mm_use_im_start_end = getattr(model.config, "mm_use_im_start_end", False)
+        mm_use_im_patch_token = getattr(model.config, "mm_use_im_patch_token", True)
+        if mm_use_im_patch_token:
+            tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=True)
+        if mm_use_im_start_end:
+            tokenizer.add_tokens([DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN], special_tokens=True)
+        model.resize_token_embeddings(len(tokenizer))
+
+        audio_tower = model.get_audio_tower()
+        if not audio_tower.is_loaded:
+            audio_tower.load_model()
+        audio_tower.to(device='cuda', dtype=torch.float16)
+        processor = audio_tower.audio_processor
 
     if hasattr(model.config, "max_sequence_length"):
         context_len = model.config.max_sequence_length
     else:
         context_len = 2048
 
-    return tokenizer, model, image_processor, context_len
+    return tokenizer, model, processor, context_len

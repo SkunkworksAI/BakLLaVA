@@ -344,10 +344,10 @@ def get_wds_data(args, is_train, epoch=0, floor=False, wds_processor=None, train
             # at this point, we have an iterator over the shards assigned to each worker at each node
             # tarfile_to_samples_nothrow,  # wds.tarfile_to_samples(handler=log_and_continue),
             wds.tarfile_to_samples(handler=log_and_continue),
-            wds.shuffle(
-                bufsize=_SAMPLE_SHUFFLE_SIZE,
-                initial=_SAMPLE_SHUFFLE_INITIAL,
-            ),
+            # wds.shuffle(
+            #     bufsize=_SAMPLE_SHUFFLE_SIZE,
+            #     initial=_SAMPLE_SHUFFLE_INITIAL,
+            # ),
         ])
     else:
         pipeline.extend([

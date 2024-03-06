@@ -355,6 +355,7 @@ def preprocess_multimodal(
 
     DEFAULT_TOKEN = DEFAULT_AUD_TOKEN if has_audio else DEFAULT_IMAGE_TOKEN
     DEFAULT_END_TOKEN = DEFAULT_AUD_END_TOKEN if has_audio else DEFAULT_IM_END_TOKEN
+    DEFAULT_START_TOKEN = DEFAULT_AUD_START_TOKEN if has_audio else DEFAULT_IM_START_TOKEN
     for source in sources:
         for sentence in source:
             if DEFAULT_TOKEN in sentence['value']:
@@ -364,8 +365,8 @@ def preprocess_multimodal(
                 if "mmtag" in conversation_lib.default_conversation.version:
                     sentence['value'] = sentence['value'].replace(DEFAULT_TOKEN, '<Image>' + DEFAULT_IMAGE_TOKEN + '</Image>')
             replace_token = DEFAULT_TOKEN
-            if data_args.mm_use_im_start_end:
-                replace_token = DEFAULT_IM_START_TOKEN + replace_token + DEFAULT_END_TOKEN
+            if data_args.mm_use_aud_start_end:
+                replace_token = DEFAULT_START_TOKEN + replace_token + DEFAULT_END_TOKEN
             sentence["value"] = sentence["value"].replace(DEFAULT_TOKEN, replace_token)
 
     return sources
@@ -772,6 +773,7 @@ class DataCollatorForSupervisedDataset(object):
     tokenizer: transformers.PreTrainedTokenizer
 
     def __call__(self, instances: Sequence[Dict]) -> Dict[str, torch.Tensor]:
+
         input_ids, labels = tuple([instance[key] for instance in instances]
                                   for key in ("input_ids", "labels"))
         input_ids = torch.nn.utils.rnn.pad_sequence(
@@ -952,6 +954,12 @@ def train():
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
             )
+        elif 'phi' in model_args.model_name_or_path:
+            model = LlavaPhiForCausalLM.from_pretrained(
+                model_args.model_name_or_path,
+                cache_dir=training_args.cache_dir,
+                **bnb_model_from_pretrained_args
+            )
         elif 'mistral' in model_args.model_name_or_path:
             model = LlavaMistralForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -1079,6 +1087,8 @@ def train():
             model_args=model_args,
             fsdp=training_args.fsdp
         )
+
+
         
         audio_tower = model.get_audio_tower()
         audio_tower.to(dtype=torch.bfloat16 if training_args.bf16 else torch.float16, device=training_args.device)
@@ -1107,7 +1117,8 @@ def train():
         training_args.use_aud_start_end = model_args.mm_use_aud_start_end
         # model.config.mm_use_im_patch_token = model_args.mm_use_im_patch_token
         model.initialize_audio_tokenizer(model_args, tokenizer=tokenizer)
-
+    print(model)
+    print(model.dtype)
     if training_args.bits in [4, 8]:
         from peft.tuners.lora import LoraLayer
         for name, module in model.named_modules():
@@ -1139,6 +1150,7 @@ def train():
     else:
         ValueError(f"Unknown dataset type {data_args.dataset_type}! Dataset type should be euther `webdataset` or `files`")
     
+    print('data_modeule:',data_module)
     trainer = LLaVATrainer(model=model,
                     tokenizer=tokenizer,
                     args=training_args,
